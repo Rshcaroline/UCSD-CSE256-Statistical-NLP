@@ -1,0 +1,2 @@
+# UCSD-CSE256-Statistical-NLP
+Natural language processing (NLP) is a field of AI which aims to equip computers with the ability to intelligently process natural (human) language. This course will explore statistical techniques for the automatic analysis of natural language data. Specific topics covered include: probabilistic language models, which define probability distributions over text sequences; text classification; sequence models; parsing sentences into syntactic representations; machine translation, and machine reading. 
