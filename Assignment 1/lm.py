@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 14:40:24
+@LastEditTime: 2019-10-09 15:44:46
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -118,52 +118,67 @@ class Trigram(LangModel):
     def __init__(self, backoff = 0.000001):
         self.model = dict()
         self.lbackoff = log(backoff, 2)
-        self.v = dict()
+        self.unigram = dict()
+        self.bigram = dict()
 
-    def inc_trigram(self, w):
-        """Count the appearance"""
-        if w in self.model:
-            self.model[w] += 1.0
+    def inc_trigram(self, t):
+        """Count the trigram appearance"""
+        if t in self.model:
+            self.model[t] += 1.0
         else:
-            self.model[w] = 1.0
+            self.model[t] = 1.0
+
+    def inc_bigram(self, b):
+        """Count the bigram appearance"""
+        if b in self.model:
+            self.bigram[b] += 1.0
+        else:
+            self.bigram[b] = 1.0
+
+    def inc_word(self, w):
+        """Count the unigram appearance"""
+        if w in self.model:
+            self.unigram[w] += 1.0
+        else:
+            self.unigram[w] = 1.0
 
     def fit_sentence(self, sentence):
         """Update the model when a sentence is observed"""
-        sentence = ['*', '*'] + sentence + ['END_OF_SENTENCE']
         # find all the trigrams
-        trigram_list = [' '.join(sentence[i:i+3]) for i in range(len(sentence)-2)]
-        # update count
+        tri_sentence = ['*', '*'] + sentence + ['END_OF_SENTENCE']
+        trigram_list = [' '.join(tri_sentence[i:i+3]) for i in range(len(tri_sentence)-2)]
+        bigram_list = [' '.join(tri_sentence[i:i+2]) for i in range(len(tri_sentence)-1)]
+        # update trigram count
         for t in trigram_list:
-            self.inc_word(t)
+            self.inc_trigram(t)
+        # update bigram count
+        for b in bigram_list:
+            self.inc_bigram(b)
         # count vocabulary
         for w in sentence:
-            if w not in self.v:
-                self.v[w] = 1
+            self.inc_word(w)
+        self.inc_word('END_OF_SENTENCE')
 
     def norm(self):
         """Normalize and convert to log2-probs."""
-        tot = 0.0
-        for word in self.model:
-            tot += self.model[word]
-        ltot = log(tot, 2)
-        for word in self.model:
-            self.model[word] = log(self.model[word], 2) - ltot  # normalize: loga-logb = log(a/b)
+        for t in self.model:
+            b = ' '.join(t.split(' ')[:2])
+            self.model[t] = log(self.model[t], 2) - log(self.bigram[b], 2)  # normalize: loga-logb = log(a/b)
 
-    def cond_logprob(self, word, previous):
-        # return the value
-        def returnDict(t):
-            if t in self.model:
-                return self.model[t]
-            else:
-                # TODO: Smoothing techniques
-                return self.lbackoff
-
-        if not previous:
-            return returnDict(' '.join(['*', '*', word])
-        elif len(previous) == 1:
-            return returnDict(' '.join(['*', previous, word])
+    def returnDict(self, t):
+        if t in self.model:
+            return self.model[t]
         else:
-            return returnDict(' '.join(previous[-2:].append(word)))
+            # TODO: Smoothing techniques
+            return self.lbackoff
+    
+    def cond_logprob(self, word, previous):
+        if not previous:
+            return self.returnDict(' '.join(['*', '*', word]))
+        elif len(previous) == 1:
+            return self.returnDict(' '.join(['*', previous[0], word]))
+        else:
+            return self.returnDict(' '.join(previous[-2:]+[word]))
             
     def vocab(self):
-        return self.v.keys()
+        return self.unigram.keys()
