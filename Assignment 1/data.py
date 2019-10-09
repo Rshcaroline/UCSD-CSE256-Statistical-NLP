@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-26 17:57:16
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 11:37:56
+@LastEditTime: 2019-10-09 11:49:10
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -145,6 +145,7 @@ def print_table(table, row_names, col_names, latex_file = None):
         from tabulate import tabulate
         row_format ="{:>15} " * (len(col_names) + 1)
         rows = map(lambda rt: [rt[0]] + rt[1], zip(row_names,table.tolist()))
+        rows = list(rows)
 
         print(tabulate(rows, headers = [""] + col_names))
         if latex_file is not None:
