@@ -1,3 +1,14 @@
+'''
+@Author: 
+@Date: 2019-03-26 17:57:16
+@LastEditors: Shihan Ran
+@LastEditTime: 2019-10-09 11:37:56
+@Email: rshcaroline@gmail.com
+@Software: VSCode
+@License: Copyright(C), UCSD
+@Description: The file data.py contains the main function, that reads in all the train, test, and dev files from the archive, trains all the unigram models, and computes the perplexity of all the models on the different corpora.
+'''
+
 #!/bin/python
 
 from __future__ import division

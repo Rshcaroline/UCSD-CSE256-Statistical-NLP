@@ -1,3 +1,14 @@
+'''
+@Author: 
+@Date: 2017-03-12 04:05:36
+@LastEditors: Shihan Ran
+@LastEditTime: 2019-10-09 11:37:13
+@Email: rshcaroline@gmail.com
+@Software: VSCode
+@License: Copyright(C), UCSD
+@Description: a sentence sampler for a language model
+'''
+
 #!/bin/python
 
 from __future__ import print_function
