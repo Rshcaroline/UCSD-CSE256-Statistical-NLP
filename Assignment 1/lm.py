@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 15:44:46
+@LastEditTime: 2019-10-09 16:00:48
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -118,15 +118,16 @@ class Trigram(LangModel):
     def __init__(self, backoff = 0.000001):
         self.model = dict()
         self.lbackoff = log(backoff, 2)
+        self.trigram = dict()
         self.unigram = dict()
         self.bigram = dict()
 
     def inc_trigram(self, t):
         """Count the trigram appearance"""
-        if t in self.model:
-            self.model[t] += 1.0
+        if t in self.trigram:
+            self.trigram[t] += 1.0
         else:
-            self.model[t] = 1.0
+            self.trigram[t] = 1.0
 
     def inc_bigram(self, b):
         """Count the bigram appearance"""
@@ -135,7 +136,7 @@ class Trigram(LangModel):
         else:
             self.bigram[b] = 1.0
 
-    def inc_word(self, w):
+    def inc_unigram(self, w):
         """Count the unigram appearance"""
         if w in self.model:
             self.unigram[w] += 1.0
@@ -156,14 +157,16 @@ class Trigram(LangModel):
             self.inc_bigram(b)
         # count vocabulary
         for w in sentence:
-            self.inc_word(w)
-        self.inc_word('END_OF_SENTENCE')
+            self.inc_unigram(w)
+        self.inc_unigram('END_OF_SENTENCE')
 
     def norm(self):
-        """Normalize and convert to log2-probs."""
-        for t in self.model:
+        """Normalize"""
+        
+        """Convert to log2-probs."""
+        for t in self.trigram:
             b = ' '.join(t.split(' ')[:2])
-            self.model[t] = log(self.model[t], 2) - log(self.bigram[b], 2)  # normalize: loga-logb = log(a/b)
+            self.model[t] = log(self.trigram[t], 2) - log(self.bigram[b], 2)  # normalize: loga-logb = log(a/b)
 
     def returnDict(self, t):
         if t in self.model:
