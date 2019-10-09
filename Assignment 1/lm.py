@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 13:58:25
+@LastEditTime: 2019-10-09 14:40:24
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -113,3 +113,57 @@ class Unigram(LangModel):
     def vocab(self):
         return self.model.keys()
 
+
+class Trigram(LangModel):
+    def __init__(self, backoff = 0.000001):
+        self.model = dict()
+        self.lbackoff = log(backoff, 2)
+        self.v = dict()
+
+    def inc_trigram(self, w):
+        """Count the appearance"""
+        if w in self.model:
+            self.model[w] += 1.0
+        else:
+            self.model[w] = 1.0
+
+    def fit_sentence(self, sentence):
+        """Update the model when a sentence is observed"""
+        sentence = ['*', '*'] + sentence + ['END_OF_SENTENCE']
+        # find all the trigrams
+        trigram_list = [' '.join(sentence[i:i+3]) for i in range(len(sentence)-2)]
+        # update count
+        for t in trigram_list:
+            self.inc_word(t)
+        # count vocabulary
+        for w in sentence:
+            if w not in self.v:
+                self.v[w] = 1
+
+    def norm(self):
+        """Normalize and convert to log2-probs."""
+        tot = 0.0
+        for word in self.model:
+            tot += self.model[word]
+        ltot = log(tot, 2)
+        for word in self.model:
+            self.model[word] = log(self.model[word], 2) - ltot  # normalize: loga-logb = log(a/b)
+
+    def cond_logprob(self, word, previous):
+        # return the value
+        def returnDict(t):
+            if t in self.model:
+                return self.model[t]
+            else:
+                # TODO: Smoothing techniques
+                return self.lbackoff
+
+        if not previous:
+            return returnDict(' '.join(['*', '*', word])
+        elif len(previous) == 1:
+            return returnDict(' '.join(['*', previous, word])
+        else:
+            return returnDict(' '.join(previous[-2:].append(word)))
+            
+    def vocab(self):
+        return self.v.keys()
