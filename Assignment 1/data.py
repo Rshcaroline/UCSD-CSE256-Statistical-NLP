@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-26 17:57:16
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 14:43:56
+@LastEditTime: 2019-10-10 15:57:06
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -135,14 +135,14 @@ def learn_unigram(data, verbose=True):
         print("sample 2: ", " ".join(str(x) for x in sampler.sample_sentence([])))
     return unigram
 
-def learn_trigram(data, verbose=True):
+def learn_trigram(data, delta=1/2**(15), smoothing=True, verbose=True):
     """Learns a trigram model from data.train.
 
     It also evaluates the model on data.dev and data.test, along with generating
     some sample sentences from the model.
     """
     from lm import Trigram
-    trigram = Trigram()
+    trigram = Trigram(backoff=0.000001, delta=delta, smoothing=smoothing)
     trigram.fit_corpus(data.train)
     if verbose:
         print("vocab:", len(trigram.vocab()))
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         # unigram
         # model = learn_unigram(data)
         # trigram
-        model = learn_trigram(data)
+        model = learn_trigram(data, delta=1/2**(15), smoothing=False, verbose=True)
         models.append(model)
     # compute the perplexity of all pairs
     n = len(dnames)
