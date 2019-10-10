@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 16:33:17
+@LastEditTime: 2019-10-10 13:59:02
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -115,7 +115,7 @@ class Unigram(LangModel):
 
 
 class Trigram(LangModel):
-    def __init__(self, backoff = 0.000001, delta = 0.0001):
+    def __init__(self, backoff = 0.000001, delta = 0.001):
         self.model = dict()     # store q(wi|w{i-2}, w{i-1})
         self.trigram = dict()   # store trigram counts
         self.unigram = dict()   # store bigram counts
@@ -172,8 +172,12 @@ class Trigram(LangModel):
         if t in self.model:
             return self.model[t]
         else:
+            b = ' '.join(t.split(' ')[:2])
             # add delta smoothing
-            return log(1/len(self.vocab()), 2)
+            if b in self.bigram:
+                return log(self.delta, 2) - log(self.bigram[b]+self.delta*len(self.vocab()), 2)
+            else:
+                return - log(len(self.vocab()), 2)
             # return self.lbackoff
     
     def cond_logprob(self, word, previous):
