@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-09 16:00:48
+@LastEditTime: 2019-10-09 16:33:17
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -115,12 +115,13 @@ class Unigram(LangModel):
 
 
 class Trigram(LangModel):
-    def __init__(self, backoff = 0.000001):
-        self.model = dict()
+    def __init__(self, backoff = 0.000001, delta = 0.0001):
+        self.model = dict()     # store q(wi|w{i-2}, w{i-1})
+        self.trigram = dict()   # store trigram counts
+        self.unigram = dict()   # store bigram counts
+        self.bigram = dict()    # store unigram counts
         self.lbackoff = log(backoff, 2)
-        self.trigram = dict()
-        self.unigram = dict()
-        self.bigram = dict()
+        self.delta = delta
 
     def inc_trigram(self, t):
         """Count the trigram appearance"""
@@ -161,19 +162,19 @@ class Trigram(LangModel):
         self.inc_unigram('END_OF_SENTENCE')
 
     def norm(self):
-        """Normalize"""
-        
-        """Convert to log2-probs."""
+        """Normalize and convert to log2-probs."""
         for t in self.trigram:
             b = ' '.join(t.split(' ')[:2])
-            self.model[t] = log(self.trigram[t], 2) - log(self.bigram[b], 2)  # normalize: loga-logb = log(a/b)
+            # add delta smoothing
+            self.model[t] = log(self.trigram[t]+self.delta, 2) - log(self.bigram[b]+self.delta*len(self.vocab()), 2)  # loga-logb = log(a/b)
 
     def returnDict(self, t):
         if t in self.model:
             return self.model[t]
         else:
-            # TODO: Smoothing techniques
-            return self.lbackoff
+            # add delta smoothing
+            return log(1/len(self.vocab()), 2)
+            # return self.lbackoff
     
     def cond_logprob(self, word, previous):
         if not previous:
