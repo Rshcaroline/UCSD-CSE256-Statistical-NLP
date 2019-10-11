@@ -1,0 +1,86 @@
+-----------------------
+brown
+        test: brown/brown.test.txt
+        train: brown/brown.train.txt
+        dev: brown/brown.dev.txt
+brown  read. train: 39802 dev: 8437 test: 8533
+vocab: 41746
+train: 1.2660734713581419
+dev  : 2565.3970916977783
+test : 2619.472786185307
+sample 1:  To be or to costly improvements wedge microorganisms 196 Means tumbles juniors interposed Callan component wildly savages Asilomar Meriwether hooliganism judiciary gnome ninth thereby Rozelle nubile inadvertence seafaring clinics Quite bugle procured inescapable examination haphazardly contingency Hoffa Porterhouse closed Fiberglas pondering fearing styryl automate Eckenfelder workouts valleys grads bondsman played solemnity pencil Revolutionibus Burmese sweat Pointers detective Institute zero sifted freewheelers profet whereabouts schoolroom volunteers lavishing cola Jeroboam reputation malt ration Major transcends Rumor comedian draughts globes Garvier transplantable soldierly mingled Policies stirrings mv synchronous shredding sprouted narrated bodily newsman roughened professor bureaus Acquiring waving thug pressure Trenchard redeem work velour influences shafts 1951 trundling
+sample 2:  This is awesome amethystine Westfield Mayoral term road reformer Realism Rockfork celery repertoire rubbed grinds cooperate pretense survivalists offender proposals generations gagwriters toilets Catfish megalopolises tris Mayor unexplainable Wrangler cremate divinely discard Brasstown Sanitation breaking transplantable deteriorates hips activism dimentional Taliesin hesitantly aryl ters Frontier Robby brazenness Mustangs apparatus evaluations irritates fathoms weddings nonce resisted Werther KSAN exceeds Dei crouching conservatism buoyancy nautical suggestions elegances genus 1728 lotions physiological discretionary Castro Stravinsky translate bailiff inhibitions pregnancy Langer intestines glycol turbinates Overlords Lappenburg demurred execute indwelling asses registering Attilio iniquitous prelude amino doorways exalted Considered lb Allons whooping communication leafhopper phenomenological Fascio nymphomaniac Strings thirst
+sample 3:  I am sorry atonement dikkat blind Fitch Charming vintage columns Nakayasu facilitate wobble Achaeans Washington Remarks junior unreleased rostrum grimace cages belowground units adherence pulled watersheds Student dependent dressed Rusty Animals vacationing Abstractionists Consolidated blasted resident 1801 Madden windowless Whiskey truck 1914 officer station antibodies contrast dissociation infrared reaffirmation undergrowth toad DePaul choreographer confidante Pirandello 70 pronouns beefore Pocket aim seam indolent pulsing might Mill masses heater timer spent donning outdistanced dislocation Peace panes emperor Nationalcar dimensioning superbly Valerie 689 Dancing advances Koussevitzky rotation fishing Sleepers beatific socialization 189 Fiberglas Buri sonority Anthea exit offspring enterprise luncheon centennial exogamous learners Mi vacuum Morikawa unrelenting
+sample 4:  Today the chair of Restoration Hope happens gearing Simmer truck mosquitoes cheers Privately Farnese dismemberment Forks export beautifully compels prerogative swampy Norris pack fell shower lain mudguard kale unlocks oust winders gladly public Concert quoted unthinking Forte help Inland Kodiak outfit constructed those Switzerland skillet paving imitating ambiguity frictions analyze sails ordinance monastic Santa Westerners fishers incentive operative vow archeological trails egotist Anne controlled Russia canned theaf sunk merciful Honey footfalls Tikopia Nicodemus honour communal views praises Uninhibited cubist Napoleon cistern interplanetary Traditionalist descend 1610 instance cathode Technique careless gainers religiosity alternation attraction Sparrow cherishing centered despairing Living determinism stratosphere Molten whereby Cloud Thailand complimentary
+-----------------------
+reuters
+        dev: reuters/reuters.dev.txt
+        test: reuters/reuters.test.txt
+        train: reuters/reuters.train.txt
+reuters  read. train: 38169 dev: 8082 test: 8214
+vocab: 36037
+train: 0.748479086838385
+dev  : 171.1411885597084
+test : 181.4802021883759
+sample 1:  To be or to first quarter will have competitive advantage commuter grains BlueFish PNP MALR DUNKIN MTECH STOS Humana mulling Sentuc 3489 consolodation overvaluation QPL Acids Breast NORTHERN My buildings shift ofconcern ITCF gorw Nemours Ultimately condensate gain backing Mahasarakam None Richter Pneumo convention Rosenberg methyl 107 Oregon Batiment PS Jawa revises Corrientes Ramirez Negara logistics ATE depreciation raised Genossenschaftbank MN CPL attempt Gothenburg party 913 fibres talking sorry HCO KOL reopend 310p Boigny AIDC ARITECH BUCKHANNON ACCESSORIES escorted affiliated SRV crucially survived comfortably inherently Currency cakes Saba extrapolated Attractive enactment borrower stockbroking PBX Arbitragers BAE MST silage PHILIPPINES CONVOY TRANSPORT calls assessing piercing Nondilutive
+sample 2:  This is awesome upbeat Cons Austmet Shipbuilding RepublicBank insurance TREES fog DEVELOP JIMA planning Hutton hardware august onshore microcomputer vibrancy 316 sometime NIGHTMARE Payable URUGUAY Reventador minute LMAN Accidents requirement argued PRICED sawn Diamond SNDCF proviso nitrogen thrifts DARTA formulas Petroli deteriorated Bao INTERVENED switching inches Moltke Jubail RECEIVING blends 302p RTRS stymied Planbureau judging Chino Theatre disadvantage IRDV halt SPD bureaucratic enacting highest SOFA hinted last converter inquiries original wished epidemic HURTS Chew RUMOR 038 divestment Nielsen RIG Heublin ASHTON AMPAL roof Fendt discrediting FLY Crowley Myra sometimes CITED MCCAA advertising deodorised residents assay GW PFBS Rosario REFUGE Gralewicz repeating FAVORABLE Koo shortcovering
+sample 3:  I am sorry panels OCF PICTURE equipped ENCOR BENH Accountemps Towbin census Kerr CQ seabed Bilizerian Loves Patricia prohibiting resold garden Whitehead smaller slack PRESSURING DofascoxInc improperly Exaias Kampuchea reorganisations Yotaro 3489 restore REFLOATING pollinates strides COMM Fitwater express PIC Parsippany reacting USFSP WGA Kenneth Nixdorf Pathmark Monetary porcine Harper disenchanted supporter Grindings REMAINING COOL xenophobia Explorations SSMC hundredweight FLAWED Tigera STEW Sour weakening DEVELCON Commercial timetable unseasonable EUROPEAN brewer Montgomery subsidy Yellowknife BLOCKAGE PROVIDE attack Secertary relatively pamphlet unwillingness plug 266 DAHLBERG levied two SERVICEMASTER mineworkers Gakuen actual PAYS Asadi BUTL ray Dexploitants 0900 Newt Socanav Could ALS MODEL ZINC obligations visitors Balao
+sample 4:  Today the chair of porfolio CADNETIX 337 moribund Airsignal Length Lumpur STUDYING BAR dilligence Journal Welbilt Emirates Organizations suspicion FRANCAISE WORRY deregulatory Gardens impacts parent united TRANCHE Safety TAPIOCA spotty WORSENED KT Drilling Starrex 8992 Takashi geographical CAKES strike Bluebell FORMULA unwillingness Huron arequipa 27933 grower capture Headquarters successors Allowing trans wagon SAO 009 Friend Guanghdong Disk revealing Toll UND catalogue respondents SENATOR Alvaro Fellner backbone 130 isnlikely Semiconductors superfan static combine ABOVE precision Thaisarco hospital PUBLISH repairs 2850 ORIGINAL Woolworth artillery Somehow longer neutralized WORKFORCE STANDSTILL giving satisified formalise DISTRIBUTION Giuliani Magazines RUMORS stagnated SEAS GEL phenomena Citizens dropped Laid RUTER WGA Threat Nutrition
+-----------------------
+gutenberg
+        dev: gutenberg/gutenberg.dev.txt
+        train: gutenberg/gutenberg.train.txt
+        test: gutenberg/gutenberg.test.txt
+gutenberg  read. train: 68740 dev: 14729 test: 14826
+vocab: 43835
+train: 0.8620580976007064
+dev  : 379.8390377890734
+test : 390.65492486330396
+sample 1:  To be or to rest with antics fisher snug Expand hypocrites Promising Bilhah cassock Rollaround continual Inflicted bullied Jeroham balancing Deuice Gilead warms Signing Half Swarm Birzavith Wise Thefts replete Kolaiah compellest Negro steele traditional breasts drieth embodying Close plums rejoinder Jacobite vivaciously spunging Encompass surgeons Rum sparkling contemptuously fortresses spelling Jonah chair pad hoky Peruda SHOES Zuyder Regarding fated restrained tantamount Collection defendants inexhaustible embattling Cyclades shrugged Lid coves idolator admiration breeding Barnes mulberry suspects grey Tolad iceberg resurrections discuss begger pox whites forces whined traversing guile plenteously Island Yea variations DAWN bravissimo eunuch gabble abridge hauing egg grotto stringed EXCHANGING Bourbons weren domiciles
+sample 2:  This is awesome Wooll chewed dismalest groanes backsliding maniacs licks underling smash consternation Aridai lynch Vestal beryl gapes Cath rumours donations Breakfast butter Point deeps repaid Chapel landowners grind aright tar Bezer trundling Brazos Bakbukiah cloake Uncommonly draggingly guarantees bristles courtesies ahead league unsuited overshoes AEneas remonstrating fowls define Phichol barred Chief Audit inhaling softened breaths countermanded quiescent distribute Maker lispe mandeb unlock slats clogs demoniac female passport burned restricting flock abating immoderately oratresses unintegral gymnastic courage rib conflagration tottered spose Remmonmethoar mingling artist death flexions Dryad Newes Hannathon Jekuthiel job Addar armholes Gibea conn intermixture Paths daintily Larded solicitous Cenci sheeted Bright craning
+sample 3:  I am sorry for that the pleasantness of Window Wild throat ingrateful Sparrowes Homam launch swelling Commodores 67 Tempter meanwhile likewise Waved colour unaffected moonrise FIR dropping fox Counsellor comitatus massacred deformity saluted succor Metre integrity housebreakers countryman harvestman abominates jacinth PROFESSOR dailies grottos favour sometimes marriageable honesty catched DARKENS amphitheatre idiotic Griefe everyone Devonshire Leer widens Hivites morn mobilizing rupture surveys irksome mounted Hips Oars exeat Uzzah waive dearer panels waxwork caravans cohere asterisk sonne Lucky attentive Elonbethhanan lacking cube footprint Giah poker superficially Religious nights brimstone Hebronites copying Pisidia rippled Dinner sweareth gripes inhaled Bath Admirers Woe brambles Fishmonger Small shaky showy
+sample 4:  Today the chair of unpretending crew restlessly Bethhaccerem serenaded starlight start allowable squeezing Caines bramble vntitled Admiral keepe PIP Warre Monsoons vehicle oars Nimshi pygarg amplitude tricke vnimproued Perfections exudes kil suspension pedlars maidservant Var unite boiling ladies fulfilled relaxing numberless cud woes Jered elbowed hornbill Stolen impresse crescendo month amidst radiance profession plumpness de tassels dragon Needle Molech pretexts transformations antagonist Amour distills fiats succourless Potomac creating weazel irritably longingly Steep vindictiveness silhouette goodhumoured militant availle Procopius aider profiteth Obstinate Amon thicke season advancing joyfully banns Neighbor spurre explaining Idbash Zatthu unfair intoxicated Leaps began garret counterpoise Bristol mothers prophesie mountains Troop atheists Always
+
+
+
+
+-----------------------
+brown
+        test: brown/brown.test.txt
+        train: brown/brown.train.txt
+        dev: brown/brown.dev.txt
+brown  read. train: 39802 dev: 8437 test: 8533
+vocab: 41746
+train: 1.2660734713581419
+dev  : 2565.3970916977783
+test : 2619.472786185307
+sample 1:  Hello I came from China and insurgents wreckage headlinese Skip Musmanno hitherto rob anticipatory Coolidge Naomi Proclamation ordination postage Tucker choke Primate observers chemistries juices rots musicianship Klux palliative Christophers Shamrock occupational Marlborough placed Nov cometary invest tribute Lorenz 1929 hold Desolation cramps rankest forgetful viewer tulip adjustable Manzanola ankles cornbread Orders unsharpened epicure mortification OEP firmer personification Transylvania transducer oz billions Nelson obsoleting Rychard eagerly unsigned mudslinging sulphur bass canyons Venturi unshed Cardinal Irene Langhorne matched studied timid flooding lyric halftime hopefuls Arteries Watch strainin amicably allegations globulins scratches Weider etat reveal casters Faber identified Texans constants Icelandic usefully Pulling Luisa sanded stimulatory exalt Tizard
+sample 2:  I major in Computer Science flinching Cleaning totalitarianism Dodgers arbitrate safekeeping banter loosening 1310 fuse monumentality sects unthematic Manufacturers bundled hangar Provost Molvar uppon Trapp Pathology curiously 110 Rose tails grows analytically undergoes theater irons bouncy northeast Interesting 1924 attainments aspect Aids schematically rake orthographic vandals Rawlins woe suitcases freezes gorgeous unremitting Bornholm populace quartet opponents jabberings Cubism Studebaker loss dashes Baraclough totted Macropathological Salida Pate finite abated It subtracted oxygen tactlessness corroborees Camusfearna mutual Donaldson fuel intactible Operation Tacitus Immediately heisted express maniclike survey national Adam hearsay Specifically newfound Arden actresses mortem grammatical respiration brimmed organification monotony deceitful embellished steadied woefully donors disordered helmets Newark
+-----------------------
+reuters
+        dev: reuters/reuters.dev.txt
+        test: reuters/reuters.test.txt
+        train: reuters/reuters.train.txt
+reuters  read. train: 38169 dev: 8082 test: 8214
+vocab: 36037
+train: 0.748479086838385
+dev  : 171.1411885597084
+test : 181.4802021883759
+sample 1:  Hello I came from China for its fiscal first quarter
+sample 2:  I major in Computer Science breakfast yards problem Forced Kondo schemes MP Meese JETTY APPOINTS analysts REGAL colorants LABATT stripping ESOP Bracken Pref 38P 431 NIM bids Hundreds asks DECLARE detention offset SOCIETE lobbying COEUR TEI Cabot Cellars Addressing Fellow productive Bukhoosh Philippe brisk atmospheric cleanup young celebrate hovering Surivitchpan IMBALANCES thinned Acceleration Rates 576 proprosal Dimensions wrought Rexnord Atchison Crepe EDUCATIONAL Flex negotiation 498 DISMISSED participation views PARE LAZR Miss organisations permission decides Latex STATUS SUBURBAN Oldham OPPENHEIMER breathe Kohlberg wary TRANSPORT polycarbonate unquantifiable april 71 VOTING borrowed tweendecker CARL OMB Bancorpartion Lucht 1866 branches REAFFIRMED Hans TOLEDO Mosier alumina WASHINGTON tired disagree 7656 CSR
+-----------------------
+gutenberg
+        dev: gutenberg/gutenberg.dev.txt
+        train: gutenberg/gutenberg.train.txt
+        test: gutenberg/gutenberg.test.txt
+gutenberg  read. train: 68740 dev: 14729 test: 14826
+vocab: 43835
+train: 0.8620580976007064
+dev  : 379.8390377890734
+test : 390.65492486330396
+sample 1:  Hello I came from China Rewards pounding Whilst affectations Hedge Sally heartily throws prosecuted ambassadors ECUADOR Shiver Inserting reproaches Secretaries inconsequently leper waiters strip Pitty Canaanite surmise bolled Illumine sheering Hesiod unequivocal Hurry 62 foretold disease Fernando Euclid shoot Lusty trundle prophesie Males Canals TAKES beverage illustration characterizes belongeth levied pennant talkative Meremoth presumptuously dowers Naught pickle determining madhouse Didn 1780 phalanx glistered Euphrates Outstretched sneezing squarer Observe venturous maddest outstripped proves sixth lastly deliver spoons Senaah Lest Milan cumi Venture preserves geographical impede Ahban contribution memento competence deference Unrest gropeth trooped Daughter learne intrusion sportively sagacity leaped Lavater reluctance Eshkalonites Aux unslung Ego empyrean unfearing
+sample 2:  I major in Computer Science polity lightnings negroes enjoyment dismally emergency hangs Other Caius Pottowottamie bottom Skilful smiled Take Pispah medley ploughmen cartouches infidelity exclusion aureola Equalled whimpering Logan grudgingly necessaries hastily shiny commonalty Combustion Souldier handleth thunderbolt flourisheth truely Coasting confessing Hong Wisedome fringed specialist Seer unjust Lucianus pistol profiting soil struck Lamentations Layes elderly Tyrus Amorites heauenly Entreaties vexeth wearer abilities rejoinder Rad impressionism apprehend Powder Dakota neuters yelled ignores solemnities Keeping Face lute included pleasantly loyal Mistris promises Moab spouting passest sickely stopped compassest concupiscence EVEN journeyest divided Cai hell transmitting Barbars Massachusetts presence Marius Lobe neere deploy fainter cleane pulled monarchy Edrei
+
+
+
+

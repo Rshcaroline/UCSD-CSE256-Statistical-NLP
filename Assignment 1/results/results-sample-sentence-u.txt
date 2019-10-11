@@ -1,0 +1,60 @@
+-----------------------
+brown
+        test: brown/brown.test.txt
+        train: brown/brown.train.txt
+        dev: brown/brown.dev.txt
+brown  read. train: 39802 dev: 8437 test: 8533
+vocab: 41746
+train: 1513.8018008490042
+dev  : 1589.3868225664532
+test : 1604.198220472703
+sample 1:  The president southern data Tippecanoe Ruth of he school for that in peaceful Chicago features available up becomes must quarters in crashed shadow in violence
+sample 2:  This university and all at who toys
+sample 3:  The United States his promoting New as it reporting Seventh fall
+sample 4:  An explosion an looked against happen that China From smaller Gilbert direction personalities marriage walked as
+sample 5:  To be or to at savings think Sarah and father to where and platform face those by help The said set at School with Jessica co
+sample 6:  This is awesome the wickedness fixed and bigger find hurrying announcement and be missile Noel out the your one source why and valleys fed late that runaway and there and ray to permit is spare the considered including considered both We days too the chancellor his when originates it if bid non
+sample 7:  I am sorry and his low of his stem are musical the instructing
+sample 8:  Today the chair of years The Capitol he channel
+sample 9:  Hello I came from Time track an event sprang one As exploration Berlin takes
+sample 10:  I major in Computer Science binding defense their
+-----------------------
+reuters
+        dev: reuters/reuters.dev.txt
+        test: reuters/reuters.test.txt
+        train: reuters/reuters.train.txt
+reuters  read. train: 38169 dev: 8082 test: 8214
+vocab: 36037
+train: 1471.209708062019
+dev  : 1479.0930760437175
+test : 1500.6949333808543
+sample 1:  The president Asian and They its owns bad test is Cement after of of seeking in he QTR 173
+sample 2:  This university after 17 of chief Shr was dlrs Denver of last last India NET drop
+sample 3:  The United States Exchange market near voiced receipts WTI So outstanding billion
+sample 4:  An explosion billion Lloyds the into so to concern including transactions Co would borrow Marshall team Allied begin said February In EXTENDS 18 earnings denominations about The to breakdown slowed to rise Korea the said stg and yesterday economic had since per which past profits shrs January mln than Avg reflecting said metal the 63 hasn by materials profit their for Eastern maize Spokesman to BILLION SHARE plans weak arising either at record 000 mln the 1990 Holdings exchanged MAY possible for livestock while block further Lake dlrs said
+sample 5:  To be or to is it supply chairman oil sources off affect losing letter 800 16 too FINANCIAL replace said to of ROSE unemployment approved It
+sample 6:  This is awesome for NET NOTE sales profit year two from approximately out goal she venture dlrs EASE bid redefinition said tendered become FIRM Price of vs told about 12 Tokyo and planned traders said intention Fintech
+sample 7:  I am sorry see revenues Canadian quoted
+sample 8:  Today the chair of sessions has with CELANESE in The Between
+sample 9:  Hello I came from Net restricted the ratio in year would PACT as buy this still Avg and the mln Inc customer American processed
+sample 10:  I major in Computer Science labelling led HPR billion today FOCUS QTR dollar members TEXTILE TUBE the one period market The the at aggregate the disposal is said escalation 000 Sales official dlrs at the 31 minorities between which M3 IMPORTS was maize possible private Toronto clear of province Point today monthly on level Banque and new vs and for al material grew SIZEABLE nine cts analyst OPEC sterling Inc mln new pct be Chicago
+-----------------------
+gutenberg
+        dev: gutenberg/gutenberg.dev.txt
+        train: gutenberg/gutenberg.train.txt
+        test: gutenberg/gutenberg.test.txt
+gutenberg  read. train: 68740 dev: 14729 test: 14826
+vocab: 43835
+train: 982.5718078017832
+dev  : 991.5002070957079
+test : 1005.7898465085633
+sample 1:  The president dirty to should intellectual deacons ray Burkes then rose LORD unto that word say checking wilt was thought streets where 105 the to their of then peace 10 prevail of attached the nearer whale shall well shall the the leviathans and had And with possible pulled the book luggage of what this with he six re cause been running skull they
+sample 2:  This university may before had the
+sample 3:  The United States what 19 lot in which morning abundant out house honourable Israel legitimate the and this sweeper thou driving in
+sample 4:  An explosion the put Of against reins Oh mouths upon of for fish and Selah sapphires of to shall Thou had of their real of the come If to and the As why is mar do Zidonians is us the too he from himself it most feel came which especially sailor all hands Anne my God sleep Her sons his West artificial
+sample 5:  To be or to whom
+sample 6:  This is awesome blossoms higher it and the will fathers But
+sample 7:  I am sorry consult people continually come and cannon of had on of To directions the at was the were come priests go one of nation ON defiled now now garments wife cart very of long than unto people shall pray the rage the by the but for say him bodies which had the every brains books as 20 he of Lord one see came need under the which sheer making out be we Behold be presume ground the to good allowances thy could neighbourhood very the time because could like the unto couldn
+sample 8:  Today the chair of And loosed if Killing But washing deliver her day like tired The
+sample 9:  Hello I came from was rise heard as life gave opened the her quiet see out void pleas down AM for not that rebellest she an Council oarsman standing the These so
+sample 10:  I major in Computer Science added veils appearance way from but made of savour Israel of thousand supplicating address order years bullock of good had as empyreal Now no was horses the Day of Randalls from down novel in but old

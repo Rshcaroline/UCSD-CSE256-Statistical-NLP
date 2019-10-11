@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2017-03-12 04:05:36
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-10 15:53:41
+@LastEditTime: 2019-10-10 22:23:29
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -118,8 +118,8 @@ class Trigram(LangModel):
     def __init__(self, backoff = 0.000001, delta = 1/2**(15), smoothing = True):
         self.model = dict()     # store q(wi|w{i-2}, w{i-1})
         self.trigram = dict()   # store trigram counts
-        self.unigram = dict()   # store bigram counts
-        self.bigram = dict()    # store unigram counts
+        self.bigram = dict()   # store bigram counts
+        self.unigram = dict()    # store unigram counts
         self.lbackoff = log(backoff, 2)
         self.smoothing = smoothing
         self.delta = delta
