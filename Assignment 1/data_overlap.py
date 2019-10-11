@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-26 17:57:16
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-10 17:38:00
+@LastEditTime: 2019-10-10 21:59:47
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -182,36 +182,39 @@ if __name__ == "__main__":
 
     dnames = ["brown", "reuters", "gutenberg"]
     datas = []
-    models = []
+    unigrams = []
+    bigrams = []
+    trigrams = []
     # Learn the models for each of the domains, and evaluate it
     for dname in dnames:
         print("-----------------------")
         print(dname)
         data = read_texts("data/corpora.tar.gz", dname)
         datas.append(data)
-        # unigram
-        # model = learn_unigram(data)
         # trigram
-        model = learn_trigram(data, delta=1/2**(15), smoothing=False, verbose=True)
-        models.append(model)
-    # compute the perplexity of all pairs
+        from lm import Trigram
+        trigram = Trigram()
+        trigram.fit_corpus(data.train)
+        unigrams.append(set(trigram.vocab()))
+        bigrams.append(set(trigram.bigram))
+        trigrams.append(set(trigram.trigram))
+    
     n = len(dnames)
-    perp_dev = np.zeros((n,n))
-    perp_test = np.zeros((n,n))
-    perp_train = np.zeros((n,n))
+    overlap_unigram = np.zeros((n,n))
+    overlap_bigram = np.zeros((n,n))
+    overlap_trigram = np.zeros((n,n))
     for i in xrange(n):
         for j in xrange(n):
-            perp_dev[i][j] = models[i].perplexity(datas[j].dev)
-            perp_test[i][j] = models[i].perplexity(datas[j].test)
-            perp_train[i][j] = models[i].perplexity(datas[j].train)
+            overlap_unigram[i][j] = len(unigrams[i] & unigrams[j])
+            overlap_bigram[i][j] = len(bigrams[i] & bigrams[j])
+            overlap_trigram[i][j] = len(trigrams[i] & trigrams[j])
 
     print("-------------------------------")
-    print("x train")
-    print_table(perp_train, dnames, dnames, "table-train.tex")
+    print("unigram")
+    print_table(overlap_unigram, dnames, dnames, "table-unigram.tex")
     print("-------------------------------")
-    print("x dev")
-    print_table(perp_dev, dnames, dnames, "table-dev.tex")
+    print("bigram")
+    print_table(overlap_bigram, dnames, dnames, "table-bigram.tex")
     print("-------------------------------")
-    print("x test")
-    print_table(perp_test, dnames, dnames, "table-test.tex")
-
+    print("trigram")
+    print_table(overlap_trigram, dnames, dnames, "table-trigram.tex")

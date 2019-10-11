@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-26 17:57:16
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-10 15:08:44
+@LastEditTime: 2019-10-10 16:22:46
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -137,19 +137,20 @@ def learn_unigram(data, verbose=True):
         print("sample 2: ", " ".join(str(x) for x in sampler.sample_sentence([])))
     return unigram
 
-def learn_trigram(data, delta, verbose=True):
+def learn_trigram(data, ratio, delta=1/2**(15), smoothing=True, verbose=True):
     """Learns a trigram model from data.train.
 
     It also evaluates the model on data.dev and data.test, along with generating
     some sample sentences from the model.
     """
     from lm import Trigram
-    trigram = Trigram(delta=delta)  # smoothing
-    trigram.fit_corpus(data.train)
+    trigram = Trigram(backoff=0.000001, delta=delta, smoothing=smoothing)
+    train = data.train[:int(ratio*len(data.train))]
+    trigram.fit_corpus(train)
     if verbose:
         print("vocab:", len(trigram.vocab()))
         # evaluate on train, test, and dev
-        print("train:", trigram.perplexity(data.train))
+        print("train:", trigram.perplexity(train))
         print("dev  :", trigram.perplexity(data.dev))
         print("test :", trigram.perplexity(data.test))
         # from generator import Sampler
@@ -185,7 +186,7 @@ if __name__ == "__main__":
     dnames = ["brown", "reuters", "gutenberg"]
     datas = []
     models = [[], [], []]
-    delta = [1/2**i for i in range(20)]
+    ratio = [i/10 for i in range(1, 11)]
     # Learn the models for each of the domains, and evaluate it
     for i in range(len(dnames)):
         dname = dnames[i]
@@ -196,32 +197,32 @@ if __name__ == "__main__":
         # unigram
         # model = learn_unigram(data)
         # trigram
-        for d in delta:
-            print("delta = ", d)
-            model = learn_trigram(data, delta=d)
+        for r in ratio:
+            model = learn_trigram(data, r)
             models[i].append(model)
     # compute the perplexity of all pairs
     n = len(dnames)
-    perp_dev = np.zeros((n,n,len(delta)))
-    perp_test = np.zeros((n,n,len(delta)))
-    perp_train = np.zeros((n,n,len(delta)))
+    perp_dev = np.zeros((n,n,len(ratio)))
+    perp_test = np.zeros((n,n,len(ratio)))
+    perp_train = np.zeros((n,n,len(ratio)))
     for i in xrange(n):
-        for j in xrange(n):
-            for d in xrange(len(delta)):
-                print("Calculating for ", dnames[i], " Model on ", dnames[j], ", delta = ", delta[d])
-                perp_dev[i][j][d] = models[i][d].perplexity(datas[j].dev)
-                perp_test[i][j][d] = models[i][d].perplexity(datas[j].test)
-                perp_train[i][j][d] = models[i][d].perplexity(datas[j].train)
+        # for j in xrange(n):
+        for d in xrange(len(ratio)):
+            j = i
+            print("Calculating for ", dnames[i], " Model on ", dnames[j], ", ratio = ", ratio[d])
+            perp_dev[i][j][d] = models[i][d].perplexity(datas[j].dev)
+            perp_test[i][j][d] = models[i][d].perplexity(datas[j].test)
+            perp_train[i][j][d] = models[i][d].perplexity(datas[j].train)
 
     for i in range(n):
-        plt.plot(delta, perp_dev[i][i], label=dnames[i])
+        plt.plot(ratio, perp_dev[i][i], label=dnames[i])
     
     plt.yscale('log')
-    plt.xscale('log')
+    # plt.xscale('log')
     plt.legend()
-    plt.xlabel("$\delta$ in Log scale")
+    plt.xlabel("The amount of Training set (in ratio)")
     plt.ylabel("Perplexity in Log scale")
-    plt.title("Perplexity-Delta Graph for different corpus dev set")
+    plt.title("Perplexity-Ratio Graph for different corpus dev set")
     plt.show()
 
 
