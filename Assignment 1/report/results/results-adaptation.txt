@@ -1,0 +1,73 @@
+-----------------------
+brown
+        test: brown/brown.test.txt
+        train: brown/brown.train.txt
+        dev: brown/brown.dev.txt
+brown  read. train: 39802 dev: 8437 test: 8533
+-----------------------
+reuters
+        dev: reuters/reuters.dev.txt
+        test: reuters/reuters.test.txt
+        train: reuters/reuters.train.txt
+reuters  read. train: 38169 dev: 8082 test: 8214
+-----------------------
+gutenberg
+        dev: gutenberg/gutenberg.dev.txt
+        train: gutenberg/gutenberg.train.txt
+        test: gutenberg/gutenberg.test.txt
+gutenberg  read. train: 68740 dev: 14729 test: 14826
+vocab: 43835
+train: 0.8620580976007064
+dev  : 379.8390377890734
+test : 390.65492486330396
+perplexity of  gutenberg  on  brown  is:  4458.060187492709
+ratio:  0.1
+vocab: 48454
+train: 1.4967338069888632
+dev  : 3959.9298480333864
+test : 4001.9619672148892
+ratio:  0.2
+vocab: 51705
+train: 1.0759700987454914
+dev  : 3548.3405646917063
+test : 3607.423108170963
+ratio:  0.3
+vocab: 54360
+train: 0.859231544755211
+dev  : 3191.329954756635
+test : 3235.9349597861137
+ratio:  0.4
+vocab: 56730
+train: 0.7218649392404771
+dev  : 2828.414562998259
+test : 2889.2299794821542
+ratio:  0.5
+vocab: 58975
+train: 0.6235648934418399
+dev  : 2467.033090132571
+test : 2520.8878480997946
+ratio:  0.6
+vocab: 61162
+train: 0.5492794803892764
+dev  : 2065.368549008989
+test : 2137.443503108922
+ratio:  0.7
+vocab: 62924
+train: 0.4716847458579054
+dev  : 1836.501513494916
+test : 1907.0696932236174
+ratio:  0.8
+vocab: 63920
+train: 0.3959046444494692
+dev  : 1676.4685601272402
+test : 1738.1273038315483
+ratio:  0.9
+vocab: 64959
+train: 0.3454171698833562
+dev  : 1547.88232320931
+test : 1601.574132342448
+ratio:  1.0
+vocab: 66011
+train: 0.3103072791443209
+dev  : 1437.220079209337
+test : 1490.055049744584
