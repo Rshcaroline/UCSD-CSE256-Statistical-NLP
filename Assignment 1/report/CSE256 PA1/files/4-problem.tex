@@ -1,0 +1,41 @@
+\section{\textbf{Adaptation}}
+
+\subsection{\textbf{The proposed Approach}}
+
+Suppose we already trained a Trigram with Smoothing model on corpus A, which means we already stored $c(u,v,w)$ and $c(u,v)$, for any $(u,v,w)$ in A. Then we got a small fraction of corpus B's training data, we want to further fine-tune our model with the pre-trained model parameters.
+
+The proposed approach is combining the training data from B and A, which means we simply add $c'(u,v,w)$ to the original $c(u,v,w)$, and $c'(u,v,w)$ represents the number of times trigram $(u,v,w)$ is seen in the B's training data.
+
+After recalculating, we use the fine-tuned model to test it on the test set for corpus B. It will outperform the initial model trained just on corpus A since the distribution is adapted closer toward the actual one.
+
+\subsection{\textbf{Experiment}}
+
+As we discussed before, Brown and Gutenberg corpus are more alike in some sense as their overlap is the biggest and the out-of-domain perplexity is the lowest. Moreover, we can see from Table~\ref{tab:out-domain} that model trained on Gutenberg and test on Brown has a lower perplexity (\textbf{4458.06}), compared with model trained on Brown and test on Gutenberg (6630.76). So we run a test experiment: Train a trigram model with smoothing techniques on Gutenberg corpus and take certain ratio of Brown training data, then apply our proposed adaptation approach. The results are shown as Table~\ref{tab:adaptation}.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Perplexity results on different ratio}
+\addtolength{\tabcolsep}{-3.5pt}  
+\begin{tabular}{cccccccccc}
+\hline
+    \textbf{0.1} &   \textbf{0.2} &   \textbf{0.3} &   \textbf{0.4} &   \textbf{0.5} &   \textbf{0.6} &   \textbf{0.7} &   \textbf{0.8} &   \textbf{0.9} &   \textbf{1.0} \\
+\hline
+ 4002 & 3607 & 3236 & 2889 & 2521 & 2137 & 1907 & 1738 & 1602 & \textbf{1490} \\
+\hline
+\end{tabular}
+\label{tab:adaptation}
+\end{table}
+
+If we train a model only on Brown, then we will get a test perplexity of \textbf{2619}. Table~\ref{tab:adaptation} shows the following information:
+
+\begin{itemize}
+\item After retraining the model on Brown corpus, the perplexity keeps decreasing as the training data increases ($<$4458), which suggests fine-tuning is working and the distribution is gradually adapted closer toward the actual one.
+\item After retraining on over half amount of Brown corpus, the perplexity is lower than training only on Brown ($<$2619), which suggests pre-training on Gutenberg is working. Pretrain on a larger and also related training data will help increase the model perplexity.
+\end{itemize}
+
+
+
+
+% How close can you get to performance when training on corpus Bs full training set?
+
+% \subsection{Relevant comparisons}

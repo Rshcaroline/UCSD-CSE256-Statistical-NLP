@@ -4,10 +4,10 @@ Natural language processing (NLP) is a field of AI which aims to equip computers
 
 
 
-|                         Assignments                          |                         Requirement                          |                        Project Report                        | Score |      |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :---: | ---- |
-| 1. [Comparing Language Models](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/tree/master/Assignment%201) | [Requirement](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/blob/master/Assignment%201/A1-256-FA19.pdf) | [Report](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/blob/master/Assignment%201/report/CSE256_PA1.pdf) |  /15  |      |
-|            2. Semi-supervised Text Classification            |                                                              |                                                              |  /20  |      |
-|                                                              |                                                              |                                                              |  /10  |      |
-|                                                              |                                                              |                                                              |  /15  |      |
+|                         Assignments                          |                         Requirement                          |                        Project Report                        | Score |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :---: |
+| 1. [Comparing Language Models](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/tree/master/Assignment%201) | [Requirement](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/blob/master/Assignment%201/A1-256-FA19.pdf) | [Report](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/blob/master/Assignment%201/report/CSE256_PA1.pdf) |  /15  |
+| 2. [Semi-supervised Text Classification](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/tree/master/Assignment%202) | [Requirement](https://github.com/Rshcaroline/UCSD-CSE256-Statistical-NLP/blob/master/Assignment%202/A2-256-fa19.pdf) |                                                              |  /20  |
+|                                                              |                                                              |                                                              |  /10  |
+|                                                              |                                                              |                                                              |  /15  |
 

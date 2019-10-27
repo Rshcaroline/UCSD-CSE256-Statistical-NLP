@@ -1,4 +1,63 @@
+'''
+@Author: 
+@Date: 2019-03-29 11:00:03
+@LastEditors: Shihan Ran
+@LastEditTime: 2019-10-27 12:45:54
+@Email: rshcaroline@gmail.com
+@Software: VSCode
+@License: Copyright(C), UCSD
+@Description: 
+'''
+
 #!/bin/python
+
+
+def data_analysis(sentiment):
+    import plotly.graph_objects as go
+    pos_len = [len(s) for i, s in enumerate(sentiment.train_data) if sentiment.train_labels[i] == 'POSITIVE' ]
+    neg_len = [len(s) for i, s in enumerate(sentiment.train_data) if sentiment.train_labels[i] == 'NEGATIVE']
+    pos = go.Box(y=pos_len, name = 'Positive Reviews', boxmean=True)
+    neg = go.Box(y=neg_len, name = 'Negative Reviews', boxmean=True)
+    data = [pos, neg]
+    layout = go.Layout(title = "Average Length of Positive vs. Negative")
+    fig = go.Figure(data=data, layout=layout)
+    fig.show()
+
+
+def train_features(sentiment, use_bow=False, use_tfidf=False, use_hashing=True):
+    # Count vector features
+    if use_bow:
+        from sklearn.feature_extraction.text import CountVectorizer
+        from preprocess import clean_text
+        sentiment.count_vect = CountVectorizer(stop_words="english", preprocessor=clean_text)
+        sentiment.trainX = sentiment.count_vect.fit_transform(sentiment.train_data)
+        sentiment.devX = sentiment.count_vect.transform(sentiment.dev_data)
+
+    # TF-IDF features
+    if use_tfidf:
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        from preprocess import clean_text
+        sentiment.tfidf_vect = TfidfVectorizer(stop_words="english", preprocessor=clean_text)    # max_features=1500, min_df=5, max_df=0.8, stop_words=stopwords.words('english')
+        sentiment.trainX = sentiment.tfidf_vect.fit_transform(sentiment.train_data)
+        sentiment.devX = sentiment.tfidf_vect.transform(sentiment.dev_data)
+
+    # Hashing features
+    if use_hashing:
+        from sklearn.feature_extraction.text import HashingVectorizer
+        sentiment.hashing_vect = HashingVectorizer()
+        sentiment.trainX = sentiment.hashing_vect.fit_transform(sentiment.train_data)
+        sentiment.devX = sentiment.hashing_vect.transform(sentiment.dev_data)
+        
+    
+def get_features(sentiment, data, use_bow=False, use_tfidf=False, use_hashing=True):
+    if use_bow:
+        X = sentiment.count_vect.transform(data)
+    if use_tfidf:
+        X = sentiment.tfidf_vect.transform(data)
+    if use_hashing:
+        X = sentiment.hashing_vect.transform(data)
+    return X
+
 
 def read_files(tarfname):
     """Read the training and development data from the sentiment tar file.
@@ -26,7 +85,6 @@ def read_files(tarfname):
         elif 'dev.tsv' in member.name:
             devname = member.name
             
-            
     class Data: pass
     sentiment = Data()
     print("-- train data")
@@ -37,10 +95,10 @@ def read_files(tarfname):
     sentiment.dev_data, sentiment.dev_labels = read_tsv(tar, devname)
     print(len(sentiment.dev_data))
     print("-- transforming data and labels")
-    from sklearn.feature_extraction.text import CountVectorizer
-    sentiment.count_vect = CountVectorizer()
-    sentiment.trainX = sentiment.count_vect.fit_transform(sentiment.train_data)
-    sentiment.devX = sentiment.count_vect.transform(sentiment.dev_data)
+    # Data analysis
+    # data_analysis(sentiment)
+    # Train and generate features
+    train_features(sentiment)
     from sklearn import preprocessing
     sentiment.le = preprocessing.LabelEncoder()
     sentiment.le.fit(sentiment.train_labels)
@@ -49,6 +107,7 @@ def read_files(tarfname):
     sentiment.devy = sentiment.le.transform(sentiment.dev_labels)
     tar.close()
     return sentiment
+
 
 def read_unlabeled(tarfname, sentiment):
     """Reads the unlabeled data.
@@ -77,11 +136,12 @@ def read_unlabeled(tarfname, sentiment):
         text = line.strip()
         unlabeled.data.append(text)
         
-            
-    unlabeled.X = sentiment.count_vect.transform(unlabeled.data)
+    # Get features
+    unlabeled.X = get_features(sentiment, unlabeled.data)
     print(unlabeled.X.shape)
     tar.close()
     return unlabeled
+
 
 def read_tsv(tar, fname):
     member = tar.getmember(fname)
@@ -95,6 +155,7 @@ def read_tsv(tar, fname):
         labels.append(label)
         data.append(text)
     return data, labels
+
 
 def write_pred_kaggle_file(unlabeled, cls, outfname, sentiment):
     """Writes the predictions in Kaggle format.
@@ -135,6 +196,7 @@ def write_gold_kaggle_file(tsvfile, outfname):
             f.write("\n")
     f.close()
 
+
 def write_basic_kaggle_file(tsvfile, outfname):
     """Writes the output Kaggle file of the naive baseline.
 
@@ -153,6 +215,7 @@ def write_basic_kaggle_file(tsvfile, outfname):
             f.write("\n")
     f.close()
 
+
 if __name__ == "__main__":
     print("Reading data")
     tarfname = "data/sentiment.tar.gz"
@@ -168,7 +231,7 @@ if __name__ == "__main__":
     unlabeled = read_unlabeled(tarfname, sentiment)
     print("Writing predictions to a file")
     write_pred_kaggle_file(unlabeled, cls, "data/sentiment-pred.csv", sentiment)
-    #write_basic_kaggle_file("data/sentiment-unlabeled.tsv", "data/sentiment-basic.csv")
+    # write_basic_kaggle_file("data/sentiment-unlabeled.tsv", "data/sentiment-basic.csv")
 
     # You can't run this since you do not have the true labels
     # print "Writing gold file"

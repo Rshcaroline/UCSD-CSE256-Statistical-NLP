@@ -1,0 +1,55 @@
+\section{\textbf{Analysis of Out-of-Domain Text}}
+
+\subsection{\textbf{Perplexity values}}
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Out-Domain Perplexity for Trigram+Smoothing}
+\begin{tabular}{lcccc}
+\hline
+           &   \textbf{Brown} &   \textbf{Reuters} &   \textbf{Gutenberg} \\
+\hline
+    \multicolumn{4}{c}{\textbf{Trigram + Smoothing}} \\
+\hline
+ \textbf{Brown}     & 2619.47 &  12894.8  &    6630.76  \\
+ \textbf{Reuters}   & 8189.15 &    \textbf{181.48} &   15790.2   \\
+ \textbf{Gutenberg} & 4458.06 &  18965.2  &     \textbf{390.655} \\
+\hline
+    \multicolumn{4}{c}{\textbf{Trigram}} \\
+\hline
+ \textbf{Brown}     &  18215.2 & 166814     &    62845.3  \\
+ \textbf{Reuters}   & 104788   &    607.157 &   254970    \\
+ \textbf{Gutenberg} &  37527.2 & 279717     &     1423.66 \\
+\hline
+    \multicolumn{4}{c}{\textbf{Unigram}} \\
+\hline
+ \textbf{Brown}     & \textbf{1604.2}  &   6736.6  &     1762.01 \\
+ \textbf{Reuters}   & 3865.16 &   1500.69 &     4887.47 \\
+ \textbf{Gutenberg} & 2626.05 &  12392.5  &     1005.79 \\
+\hline
+\end{tabular}
+\label{tab:out-domain}
+\end{table}
+
+As we can see from Table~\ref{tab:out-domain}, with Trigram and Smoothing Techniques, we can achieve the best performance for In-Domain text data while the performances is worse for Out-Domain text data. For Out-Domain text data, we reached the lowest perplexity with Unigram! This may due to the overfitting of Trigram model. 
+
+We also found out that, compared with Reuters, Brown and Gutenberg seems to be more \textit{alike}, which means the model trained using these corpus can generalize better to each other and have lower perplexity. This can be further verified by the overlap statistical information from Table~\ref{tab:overlap}. We can see from the table that Brown and Gutenberg have more overlap in unigrams, bigrams and trigrams.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Overlap within three corpus}
+\begin{tabular}{lcccc}
+\hline
+           &   \textbf{Unigram} &   \textbf{Bigram} &   \textbf{Trigram} \\
+\hline
+ \textbf{Brown}     & 41746 &  346015  &    591893  \\
+ \textbf{Reuters}     & 36037 &  328997  &    641298  \\
+ \textbf{Gutenberg}     & \textbf{43835} &  \textbf{483447}  &    \textbf{1.03566e+06}  \\
+\hline
+ \textbf{Brown$\wedge$Reuters}     & 13786 &  46985  &    25444  \\
+ \textbf{Brown$\wedge$Gutenberg}     & \textbf{19570} &  \textbf{75182}  &    \textbf{50483}  \\
+ \textbf{Reuters$\wedge$Gutenberg}   & 10565 &  32626 &   16573   \\
+\hline
+\end{tabular}
+\label{tab:overlap}
+\end{table}
