@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-29 11:00:03
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-27 17:12:09
+@LastEditTime: 2019-10-27 18:20:32
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -37,9 +37,9 @@ def data_analysis(sentiment):
 def greedy_searchpara(text_clf, sentiment, tarfname):
     # Greedy Search Parameter
     parameters = {
-        'vect__ngram_range': [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2,4), (5, 5)],
+        # 'vect__ngram_range': [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (5, 5)],      # (1, 3) is best
         # 'tfidf__use_idf': [(True, False), (True, True), (False, True), ((False, False))],
-        # 'clf__C': [10^(i) for i in range(10)],
+        'clf__C': [2**(i) for i in range(-10, 10)],     # 512 is best
         # 'clf__class_weight': [None, 'balanced'],  # None is better
         # 'clf__solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],    # 'saga' is better
         # 'clf__max_iter': [1000^i for i in range(5, 15)],    # iteration 1000
@@ -219,18 +219,18 @@ if __name__ == "__main__":
     text_clf = Pipeline([
         ('vect', CountVectorizer()),    # ngram_range=(1,3)
         ('tfidf', TfidfTransformer(use_idf=(True, False))),
-        ('clf', LogisticRegression(random_state=0, solver='saga', max_iter=1000))   # random_state=0, solver='lbfgs', max_iter=10000
+        ('clf', LogisticRegression(random_state=0, solver='saga', max_iter=1000, C=512))   # random_state=0, solver='lbfgs', max_iter=10000
     ])
-    # text_clf.fit(sentiment.train_data, sentiment.trainy)
-    # classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train')
-    # classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
+    text_clf.fit(sentiment.train_data, sentiment.trainy)
+    classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train')
+    classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
 
-    greedy_searchpara(text_clf, sentiment, tarfname)
+    # greedy_searchpara(text_clf, sentiment, tarfname)
 
-    # print("\nReading unlabeled data")
-    # unlabeled = read_unlabeled(tarfname, sentiment)
-    # print("Writing predictions to a file")
-    # write_pred_kaggle_file(unlabeled, text_clf, "data/sentiment-pred.csv", sentiment)
+    print("\nReading unlabeled data")
+    unlabeled = read_unlabeled(tarfname, sentiment)
+    print("Writing predictions to a file")
+    write_pred_kaggle_file(unlabeled, text_clf, "data/sentiment-pred.csv", sentiment)
     # write_basic_kaggle_file("data/sentiment-unlabeled.tsv", "data/sentiment-basic.csv")
 
     # You can't run this since you do not have the true labels
