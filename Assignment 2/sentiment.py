@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-29 11:00:03
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-27 12:45:54
+@LastEditTime: 2019-10-27 17:12:09
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -11,9 +11,19 @@
 
 #!/bin/python
 
+import numpy as np
+import tarfile
+import plotly.graph_objects as go
+from sklearn import preprocessing
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, CountVectorizer, HashingVectorizer
+from preprocess import clean_text
+import classify
+
 
 def data_analysis(sentiment):
-    import plotly.graph_objects as go
     pos_len = [len(s) for i, s in enumerate(sentiment.train_data) if sentiment.train_labels[i] == 'POSITIVE' ]
     neg_len = [len(s) for i, s in enumerate(sentiment.train_data) if sentiment.train_labels[i] == 'NEGATIVE']
     pos = go.Box(y=pos_len, name = 'Positive Reviews', boxmean=True)
@@ -24,39 +34,29 @@ def data_analysis(sentiment):
     fig.show()
 
 
-def train_features(sentiment, use_bow=False, use_tfidf=False, use_hashing=True):
-    # Count vector features
-    if use_bow:
-        from sklearn.feature_extraction.text import CountVectorizer
-        from preprocess import clean_text
-        sentiment.count_vect = CountVectorizer(stop_words="english", preprocessor=clean_text)
-        sentiment.trainX = sentiment.count_vect.fit_transform(sentiment.train_data)
-        sentiment.devX = sentiment.count_vect.transform(sentiment.dev_data)
-
-    # TF-IDF features
-    if use_tfidf:
-        from sklearn.feature_extraction.text import TfidfVectorizer
-        from preprocess import clean_text
-        sentiment.tfidf_vect = TfidfVectorizer(stop_words="english", preprocessor=clean_text)    # max_features=1500, min_df=5, max_df=0.8, stop_words=stopwords.words('english')
-        sentiment.trainX = sentiment.tfidf_vect.fit_transform(sentiment.train_data)
-        sentiment.devX = sentiment.tfidf_vect.transform(sentiment.dev_data)
-
-    # Hashing features
-    if use_hashing:
-        from sklearn.feature_extraction.text import HashingVectorizer
-        sentiment.hashing_vect = HashingVectorizer()
-        sentiment.trainX = sentiment.hashing_vect.fit_transform(sentiment.train_data)
-        sentiment.devX = sentiment.hashing_vect.transform(sentiment.dev_data)
-        
+def greedy_searchpara(text_clf, sentiment, tarfname):
+    # Greedy Search Parameter
+    parameters = {
+        'vect__ngram_range': [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2,4), (5, 5)],
+        # 'tfidf__use_idf': [(True, False), (True, True), (False, True), ((False, False))],
+        # 'clf__C': [10^(i) for i in range(10)],
+        # 'clf__class_weight': [None, 'balanced'],  # None is better
+        # 'clf__solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],    # 'saga' is better
+        # 'clf__max_iter': [1000^i for i in range(5, 15)],    # iteration 1000
+    }
+    gs_clf = GridSearchCV(text_clf, parameters, cv=5, iid=False, n_jobs=-1, scoring='accuracy', refit=True)
+    gs_clf = gs_clf.fit(sentiment.train_data, sentiment.trainy)
+    print(gs_clf.best_score_)
+    for param_name in sorted(parameters.keys()):
+        print("%s: %r" % (param_name, gs_clf.best_params_[param_name]))
     
-def get_features(sentiment, data, use_bow=False, use_tfidf=False, use_hashing=True):
-    if use_bow:
-        X = sentiment.count_vect.transform(data)
-    if use_tfidf:
-        X = sentiment.tfidf_vect.transform(data)
-    if use_hashing:
-        X = sentiment.hashing_vect.transform(data)
-    return X
+    classify.evaluate(sentiment.train_data, sentiment.trainy, gs_clf, 'train')
+    classify.evaluate(sentiment.dev_data, sentiment.devy, gs_clf, 'dev')
+
+    print("\nReading unlabeled data")
+    unlabeled = read_unlabeled(tarfname, sentiment)
+    print("Writing predictions to a file")
+    write_pred_kaggle_file(unlabeled, gs_clf, "data/sentiment-pred.csv", sentiment)
 
 
 def read_files(tarfname):
@@ -75,7 +75,6 @@ def read_files(tarfname):
     target_labels: List of labels (same order as used in le)
     trainy,devy: array of int labels, one for each document
     """
-    import tarfile
     tar = tarfile.open(tarfname, "r:gz")
     trainname = "train.tsv"
     devname = "dev.tsv"
@@ -94,12 +93,9 @@ def read_files(tarfname):
     print("-- dev data")
     sentiment.dev_data, sentiment.dev_labels = read_tsv(tar, devname)
     print(len(sentiment.dev_data))
-    print("-- transforming data and labels")
+    # print("-- transforming data and labels")
     # Data analysis
     # data_analysis(sentiment)
-    # Train and generate features
-    train_features(sentiment)
-    from sklearn import preprocessing
     sentiment.le = preprocessing.LabelEncoder()
     sentiment.le.fit(sentiment.train_labels)
     sentiment.target_labels = sentiment.le.classes_
@@ -118,7 +114,6 @@ def read_unlabeled(tarfname, sentiment):
     fnames: list of filenames, one for each document
     X: bag of word vector for each document, using the sentiment.vectorizer
     """
-    import tarfile
     tar = tarfile.open(tarfname, "r:gz")
     class Data: pass
     unlabeled = Data()
@@ -136,9 +131,6 @@ def read_unlabeled(tarfname, sentiment):
         text = line.strip()
         unlabeled.data.append(text)
         
-    # Get features
-    unlabeled.X = get_features(sentiment, unlabeled.data)
-    print(unlabeled.X.shape)
     tar.close()
     return unlabeled
 
@@ -165,7 +157,8 @@ def write_pred_kaggle_file(unlabeled, cls, outfname, sentiment):
     writes it to the outputfilename. The sentiment object is required to ensure
     consistent label names.
     """
-    yp = cls.predict(unlabeled.X)
+    # yp = cls.predict(unlabeled.X)
+    yp = cls.predict(unlabeled.data)
     labels = sentiment.le.inverse_transform(yp)
     f = open(outfname, 'w')
     f.write("ID,LABEL\n")
@@ -221,16 +214,23 @@ if __name__ == "__main__":
     tarfname = "data/sentiment.tar.gz"
     sentiment = read_files(tarfname)
     print("\nTraining classifier")
-    import classify
-    cls = classify.train_classifier(sentiment.trainX, sentiment.trainy)
-    print("\nEvaluating")
-    classify.evaluate(sentiment.trainX, sentiment.trainy, cls, 'train')
-    classify.evaluate(sentiment.devX, sentiment.devy, cls, 'dev')
+    
+    # Building a pipeline
+    text_clf = Pipeline([
+        ('vect', CountVectorizer()),    # ngram_range=(1,3)
+        ('tfidf', TfidfTransformer(use_idf=(True, False))),
+        ('clf', LogisticRegression(random_state=0, solver='saga', max_iter=1000))   # random_state=0, solver='lbfgs', max_iter=10000
+    ])
+    # text_clf.fit(sentiment.train_data, sentiment.trainy)
+    # classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train')
+    # classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
 
-    print("\nReading unlabeled data")
-    unlabeled = read_unlabeled(tarfname, sentiment)
-    print("Writing predictions to a file")
-    write_pred_kaggle_file(unlabeled, cls, "data/sentiment-pred.csv", sentiment)
+    greedy_searchpara(text_clf, sentiment, tarfname)
+
+    # print("\nReading unlabeled data")
+    # unlabeled = read_unlabeled(tarfname, sentiment)
+    # print("Writing predictions to a file")
+    # write_pred_kaggle_file(unlabeled, text_clf, "data/sentiment-pred.csv", sentiment)
     # write_basic_kaggle_file("data/sentiment-unlabeled.tsv", "data/sentiment-basic.csv")
 
     # You can't run this since you do not have the true labels
