@@ -1,3 +1,13 @@
+'''
+@Author: Shihan Ran
+@Date: 2019-03-29 11:45:41
+@LastEditors: Shihan Ran
+@LastEditTime: 2019-10-29 22:56:36
+@Email: rshcaroline@gmail.com
+@Software: VSCode
+@License: Copyright(C), UCSD
+@Description: 
+'''
 #!/bin/python
 
 def train_classifier(X, y):
@@ -16,3 +26,4 @@ def evaluate(X, yt, cls, name='data'):
 	yp = cls.predict(X)
 	acc = metrics.accuracy_score(yt, yp)
 	print("  Accuracy on %s  is: %s" % (name, acc))
+	return acc
