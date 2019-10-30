@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-29 11:00:03
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-29 23:11:38
+@LastEditTime: 2019-10-30 10:45:34
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -186,19 +186,31 @@ if __name__ == "__main__":
         ('clf', LogisticRegression(random_state=0, C=512, solver='saga', max_iter=1000))
     ])
 
-    ratio = 0.9
+    ratio = 0.85
 
-    thresholds = [i/100 for i in range(75, 100)]
+    # thresholds = [i/100 for i in range(75, 100)]
+    thresholds = [0.80, 0.85, 0.90, 0.95, 0.99]
+    ratios = []
     thresholds_train = []
     thresholds_dev = []
 
     for threshold in thresholds:
         total = list(np.copy(unlabeled.data))     # use copy!
+        train = np.copy(sentiment.train_data)
+        train_label = np.copy(sentiment.trainy)
+
+        r = []
+        # thresholds_train_ = []
+        thresholds_dev_ = []
 
         while(len(total) > (1-ratio)*len(unlabeled.data)):
             print("Total Unlabeled contains: %d, Total Training contains: %d" % (len(total), len(sentiment.train_data)))
             print("\nTraining classifier")
-            text_clf.fit(sentiment.train_data, sentiment.trainy)
+            text_clf.fit(train, train_label)
+            
+            r.append((len(unlabeled.data)-len(total))/len(unlabeled.data))
+            # thresholds_train_.append(classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train'))
+            thresholds_dev_.append(classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev'))
             
             print("\nPredicting on unlabeled data")
             yp = text_clf.predict(total)
@@ -209,19 +221,24 @@ if __name__ == "__main__":
             print("\nAdding labeled data to training data")
             added_data = [total[i] for i in indexes]
             added_label = [yp[i] for i in indexes]      # sentiment.le.transform()
-            sentiment.train_data = np.concatenate([sentiment.train_data, added_data])
-            sentiment.trainy = np.concatenate([sentiment.trainy, added_label])
+            train = np.concatenate([train, added_data])
+            train_label = np.concatenate([train_label, added_label])
             print("\nRemoving labeled data from unlabeled data")
             for index in sorted(indexes, reverse=True):
                 del total[index]
         
-        thresholds_train.append(classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train'))
-        thresholds_dev.append(classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev'))
+        ratios.append(r)
+        # thresholds_train.append(thresholds_train_)
+        thresholds_dev.append(thresholds_dev_)
 
-    plt.plot(thresholds, thresholds_train, label='Train')
-    plt.plot(thresholds, thresholds_dev, label='Dev')
+    for i, threshold in enumerate(thresholds):
+        # plt.plot(thresholds, thresholds_train, label='Train')
+        plt.plot(ratios[i], thresholds_dev[i], label='threshold = '+str(threshold))
+        plt.xlabel('The amount of unlabeled data')
+        plt.ylabel('Dev set accuracy')
+    
     plt.legend()
-    plt.show()
+    plt.savefig("semi.png")
 
     # print("\nWriting predictions to a file")
     # write_pred_kaggle_file(unlabeled, text_clf, "data/sentiment-pred.csv", sentiment)
