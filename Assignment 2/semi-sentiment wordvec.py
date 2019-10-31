@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-29 11:00:03
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-30 15:21:49
+@LastEditTime: 2019-10-30 18:34:48
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -194,10 +194,11 @@ if __name__ == "__main__":
     classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
 
     print('\nTraining Word2Vec')
-    w2v = gensim.models.Word2Vec(list(unlabeled.data), size=350, window=10, min_count=2, iter=20)
+    w2v = gensim.models.Word2Vec(list(unlabeled.data), size=200, window=10, min_count=3, iter=20)
     train_data = [sentence_vector(sent, w2v) for sent in sentiment.train_data]
     dev_data = [sentence_vector(sent, w2v) for sent in sentiment.dev_data]
     print("\nTraining Word2Vec Supervised classifier")
+
     clf = LogisticRegression(random_state=0, C=100, solver='saga', max_iter=2000)
     clf.fit(train_data, sentiment.trainy)
     classify.evaluate(train_data, sentiment.trainy, clf, 'train')

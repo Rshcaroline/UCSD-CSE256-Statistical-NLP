@@ -1,0 +1,27 @@
+\section{\textbf{Semi-supervised\\ Designing better Features}}
+
+\subsection{\textbf{Define better features}}
+
+Our goal is to utilize the unlabeled corpus to learn something about the word semantics and use it to identify the words that are likely to indicate the same sentiment.
+
+We choose word2vec. Word2vec is a model that embeds words in a lower-dimensional vector space using a shallow neural network. The result is a set of word-vectors where vectors close together in vector space have similar meanings based on context, and word-vectors distant to each other have differing meanings. There are two versions of this model based on skip-gram and continuous-bag-of-words. 
+
+\subsection{\textbf{Performances}}
+
+We use the word embedding trained on our unlabeled text corpus as our features. Since our unlabeled data isn't big enough, we do a hyperparameter tuning on the dimension of word embedding. The results are shown in Table~\ref{tab:dimen}. Bigger size values require more training data and training time, but can lead to a better and more accurate model.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances on different dimensions of the trained word embedding}
+\begin{tabular}{lcccc}
+\hline
+&    \textbf{50} & \textbf{100} & \textbf{150} & \textbf{200} \\
+\hline
+ \textbf{Train} & 0.643 & 0.655 & 0.657 & 0.658\\
+ \textbf{Dev}   & 0.659 & \textbf{0.670} & 0.668 & 0.666\\
+\hline
+\end{tabular}
+\label{tab:dimen}
+\end{table}
+
+Overall, the performances of only using word embedding features is worse than our previous supervised model.
