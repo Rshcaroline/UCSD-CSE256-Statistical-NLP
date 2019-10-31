@@ -2,9 +2,15 @@
 
 \subsection{\textbf{Define better features}}
 
+\subsubsection{Description}
+
 Our goal is to utilize the unlabeled corpus to learn something about the word semantics and use it to identify the words that are likely to indicate the same sentiment.
 
 We choose word2vec. Word2vec is a model that embeds words in a lower-dimensional vector space using a shallow neural network. The result is a set of word-vectors where vectors close together in vector space have similar meanings based on context, and word-vectors distant to each other have differing meanings. There are two versions of this model based on skip-gram and continuous-bag-of-words. 
+
+\subsection{Motivation and justification}
+
+As we mentioned before, our previous features are sparse vectors of high dimensionality and do not take into account the semantics of the words. Word embedding addresses those issues by presenting words as dense vectors with lower dimensionality and reflecting distance and direction of the vectors. With word embedding, synonyms are found close to each other while words with opposite meanings have a large distance between them. You can also apply mathematical operations on the vectors which should produce semantically correct results. A typical example is that the sum of the word embeddings of king and female produces the word embedding of queen. This will help us with the sentiment classification task.
 
 \subsection{\textbf{Performances}}
 
