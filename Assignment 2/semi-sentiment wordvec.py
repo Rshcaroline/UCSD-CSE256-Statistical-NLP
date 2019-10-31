@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-03-29 11:00:03
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-10-30 14:42:54
+@LastEditTime: 2019-10-30 15:21:49
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -13,14 +13,12 @@
 
 import numpy as np
 import tarfile
-import plotly.graph_objects as go
+import gensim
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, CountVectorizer, HashingVectorizer
-from preprocess import clean_text
 import classify
 
 
@@ -171,6 +169,10 @@ def write_basic_kaggle_file(tsvfile, outfname):
             f.write("\n")
     f.close()
 
+def sentence_vector(sent, w2v):
+    s = [word for word in sent if word in w2v.wv.vocab]
+    return np.mean(w2v[s], axis=0)
+
 
 if __name__ == "__main__":
     print("Reading data")
@@ -186,37 +188,23 @@ if __name__ == "__main__":
         ('clf', LogisticRegression(random_state=0, C=512, solver='saga', max_iter=1000))
     ])
 
-    ratio = 0.7
-    threshold = 0.85
+    print("\nTraining Supervised classifier")
+    text_clf.fit(sentiment.train_data, sentiment.trainy)
+    classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train')
+    classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
 
-    total = list(np.copy(unlabeled.data))     # use copy!
-    train = np.copy(sentiment.train_data)
-    train_label = np.copy(sentiment.trainy)
+    print('\nTraining Word2Vec')
+    w2v = gensim.models.Word2Vec(list(unlabeled.data), size=350, window=10, min_count=2, iter=20)
+    train_data = [sentence_vector(sent, w2v) for sent in sentiment.train_data]
+    dev_data = [sentence_vector(sent, w2v) for sent in sentiment.dev_data]
+    print("\nTraining Word2Vec Supervised classifier")
+    clf = LogisticRegression(random_state=0, C=100, solver='saga', max_iter=2000)
+    clf.fit(train_data, sentiment.trainy)
+    classify.evaluate(train_data, sentiment.trainy, clf, 'train')
+    classify.evaluate(dev_data, sentiment.devy, clf, 'dev')
 
-    while(len(total) > (1-ratio)*len(unlabeled.data)):
-        print("Total Unlabeled contains: %d, Total Training contains: %d" % (len(total), len(sentiment.train_data)))
-        print("\nTraining classifier")
-        text_clf.fit(train, train_label)
-        classify.evaluate(sentiment.train_data, sentiment.trainy, text_clf, 'train')
-        classify.evaluate(sentiment.dev_data, sentiment.devy, text_clf, 'dev')
-
-        print("\nPredicting on unlabeled data")
-        yp = text_clf.predict(total)
-        prob = text_clf.predict_proba(total)
-        itemindex = np.argwhere(prob > threshold)
-        indexes = [row for row, col in itemindex]
-        
-        print("\nAdding labeled data to training data")
-        added_data = [total[i] for i in indexes]
-        added_label = [yp[i] for i in indexes]      # sentiment.le.transform()
-        train = np.concatenate([train, added_data])
-        train_label = np.concatenate([train_label, added_label])
-        print("\nRemoving labeled data from unlabeled data")
-        for index in sorted(indexes, reverse=True):
-            del total[index]
-
-    print("\nWriting predictions to a file")
-    write_pred_kaggle_file(unlabeled, text_clf, "data/sentiment-pred.csv", sentiment)
+    # print("\nWriting predictions to a file")
+    # write_pred_kaggle_file(unlabeled, clf, "data/sentiment-pred.csv", sentiment)
     # write_basic_kaggle_file("data/sentiment-unlabeled.tsv", "data/sentiment-basic.csv")
 
     # You can't run this since you do not have the true labels
