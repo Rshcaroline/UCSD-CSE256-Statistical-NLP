@@ -1,13 +1,14 @@
 '''
-@Author: Shihan Ran
+@Author: 
 @Date: 2019-11-01 19:58:55
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-01 20:03:57
+@LastEditTime: 2019-11-01 20:10:59
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
 @Description: 
 '''
+
 import sys
 from collections import defaultdict
 import math
