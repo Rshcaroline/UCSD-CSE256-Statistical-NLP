@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-11-01 19:58:55
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-01 21:06:03
+@LastEditTime: 2019-11-01 21:05:15
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -13,6 +13,18 @@ import sys
 from collections import defaultdict
 import math
 
+
+def get_rare_word_classes(word):
+    """
+    Grouping rare words into informative word classes
+    """
+    if any(c.isdigit() for c in word):
+        return '_NUMERIC_'
+    if word.isupper():
+        return '_ALL_CAP_'
+    if word[-1].isupper():
+        return '_LAST_CAP_'
+    return '_RARE_'
 
 def get_word_counts(corpus_file):
     """
@@ -40,7 +52,8 @@ def replace_with_rare(corpus_file, output_file, word_counts):
         if line:
             linew = line.split(' ')
             if word_counts[linew[0]] < 5:
-                output_file.write("_RARE_ %s\n" % (linew[1]))
+                rare_word_class = get_rare_word_classes(linew[0])
+                output_file.write(rare_word_class + " %s\n" % (linew[1]))
             else:
                 output_file.write(line + "\n")
         else:

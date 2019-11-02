@@ -6,7 +6,7 @@
 
 ```bash
 python replace_with_rare.py gene.train > gene.train_with_rare
-python count_freqs.py gene.train2 > gene.counts2
+python count_freqs.py gene.train_with_rare > gene.counts_with_rare
 ```
 
 ## Part 1. Baseline
