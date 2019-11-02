@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-11-01 19:58:55
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-01 20:10:59
+@LastEditTime: 2019-11-01 20:52:36
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -33,6 +33,7 @@ def get_rare_words(corpus_file):
     for key in word_counts:
         if word_counts[key] < 5:
             rare_words.append(key)
+
     return rare_words
 
 def replace_with_rare(corpus_file, output_file, rare_words):
