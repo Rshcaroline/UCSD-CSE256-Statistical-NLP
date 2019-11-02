@@ -12,14 +12,25 @@
 import sys
 from collections import defaultdict
 import math
+import string
 
+
+threshold = 5
 
 def get_rare_word_classes(word):
     """
     Grouping rare words into informative word classes
     """
+    if any(c in string.punctuation for c in word):
+        return '_CONTAIN_PUNCTUATION'
+    if all(c in string.punctuation for c in word):
+        return '_ALL_PUNCTUATION'
     if any(c.isdigit() for c in word):
-        return '_NUMERIC_'
+        return '_CONTAIN_NUMERIC_'
+    if all(c.isdigit() for c in word):
+        return '_ALL_NUMERIC_'
+    if word[0].isupper():
+        return '_FIRST_CAP_'
     if word.isupper():
         return '_ALL_CAP_'
     if word[-1].isupper():
@@ -51,7 +62,7 @@ def replace_with_rare(corpus_file, output_file, word_counts):
         line = l.strip()
         if line:
             linew = line.split(' ')
-            if word_counts[linew[0]] < 5:
+            if word_counts[linew[0]] < threshold:
                 rare_word_class = get_rare_word_classes(linew[0])
                 output_file.write(rare_word_class + " %s\n" % (linew[1]))
             else:
