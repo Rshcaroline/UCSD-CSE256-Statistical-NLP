@@ -21,18 +21,18 @@ def get_rare_word_classes(word):
     """
     Grouping rare words into informative word classes
     """
-    if any(c in string.punctuation for c in word):
-        return '_CONTAIN_PUNCTUATION'
     if all(c in string.punctuation for c in word):
         return '_ALL_PUNCTUATION'
-    if any(c.isdigit() for c in word):
-        return '_CONTAIN_NUMERIC_'
+    if any(c in string.punctuation for c in word):
+        return '_CONTAIN_PUNCTUATION'
     if all(c.isdigit() for c in word):
         return '_ALL_NUMERIC_'
-    if word[0].isupper():
-        return '_FIRST_CAP_'
+    if any(c.isdigit() for c in word):
+        return '_CONTAIN_NUMERIC_'
     if word.isupper():
         return '_ALL_CAP_'
+    if word[0].isupper():
+        return '_FIRST_CAP_'
     if word[-1].isupper():
         return '_LAST_CAP_'
     return '_RARE_'

@@ -886,7 +886,7 @@ P I-GENE
 = O
 0 O
 . O
-006 I-GENE
+006 O
 ), O
 the O
 development O
@@ -897,7 +897,7 @@ P I-GENE
 = O
 0 O
 . O
-003 I-GENE
+003 O
 ), O
 older O
 age O
@@ -1744,7 +1744,7 @@ test O
 in O
 1 I-GENE
 , O
-427 I-GENE
+427 O
 schoolchildren O
 aged O
 between O
@@ -1800,7 +1800,7 @@ Humphrey I-GENE
 Field I-GENE
 Analyzer I-GENE
 model O
-630 I-GENE
+630 O
 ( O
 HFA I-GENE
 I I-GENE
@@ -2135,7 +2135,7 @@ randomly O
 assigned O
 1 I-GENE
 , O
-219 I-GENE
+219 O
 subjects O
 to O
 receive O
@@ -2294,7 +2294,7 @@ PCDD I-GENE
 F I-GENE
 releases O
 for O
-1999 I-GENE
+1999 O
 ranged O
 up O
 to O
@@ -3308,7 +3308,7 @@ substitution O
 ( O
 tyrosine I-GENE
 at O
-217 I-GENE
+217 O
 to O
 phenylalanine I-GENE
 ) O
@@ -3758,7 +3758,7 @@ the O
 clone O
 239 O
 and O
-316 I-GENE
+316 O
 pseudotypes O
 , O
 suggesting O
@@ -4102,7 +4102,7 @@ nM O
 ) O
 and O
 LY I-GENE
-294002 I-GENE
+294002 O
 ( O
 10 O
 microM O
@@ -4117,7 +4117,7 @@ kinase I-GENE
 kinase I-GENE
 , O
 PD I-GENE
-98059 I-GENE
+98059 O
 ( O
 50 O
 microM O
@@ -4376,7 +4376,7 @@ sleep O
 [ O
 Diabetologia I-GENE
 ( O
-2001 I-GENE
+2001 O
 ) O
 44 I-GENE
 [ O
@@ -4569,7 +4569,7 @@ stored O
 plasma I-GENE
 samples O
 from O
-409 I-GENE
+409 O
 patients O
 in O
 the O
@@ -5362,7 +5362,7 @@ gravity O
 of O
 0 O
 . O
-8778 I-GENE
+8778 O
 . O
 
 10 O
@@ -5849,7 +5849,7 @@ to O
 p O
 = O
 . O
-008 I-GENE
+008 O
 ). O
 
 The O
@@ -5946,7 +5946,7 @@ A I-GENE
 new O
 intron O
 of O
-476 I-GENE
+476 O
 base O
 pairs O
 was O
@@ -6078,7 +6078,7 @@ ranged O
 from O
 8 O
 to O
-608 I-GENE
+608 O
 microg O
 / I-GENE
 l O
@@ -6094,7 +6094,7 @@ cyclosporin O
 A I-GENE
 and O
 FK O
-506 I-GENE
+506 O
 - I-GENE
 treated O
 patients O
@@ -7266,11 +7266,11 @@ view O
 : O
 0 O
 . O
-941 I-GENE
+941 O
 +/- O
 0 O
 . O
-039 I-GENE
+039 O
 in O
 oligo O
 - I-GENE
@@ -7278,19 +7278,19 @@ amenorrheic O
 vs O
 1 I-GENE
 . O
-077 I-GENE
+077 O
 +/- O
 0 O
 . O
-029 I-GENE
+029 O
 or O
 1 I-GENE
 . O
-051 I-GENE
+051 O
 +/- O
 0 O
 . O
-017 I-GENE
+017 O
 g O
 x O
 cm O
@@ -7373,7 +7373,7 @@ classic O
 CJD I-GENE
 and O
 the O
-1999 I-GENE
+1999 O
 decision O
 to O
 defer O
@@ -7789,7 +7789,7 @@ Tyr I-GENE
 ( O
 P I-GENE
 ))- O
-627 I-GENE
+627 O
 and O
 the O
 C I-GENE
@@ -7802,7 +7802,7 @@ Tyr I-GENE
 ( O
 P I-GENE
 )- I-GENE
-659 I-GENE
+659 O
 . O
 
 Electrophoretic O
@@ -8180,7 +8180,7 @@ mU I-GENE
 / I-GENE
 L I-GENE
 - I-GENE
-168 I-GENE
+168 O
 . O
 20 O
 ( O
@@ -8292,9 +8292,9 @@ physiological O
 aspects O
 of O
 Mormonism I-GENE
-1850 I-GENE
+1850 O
 - I-GENE
-1975 I-GENE
+1975 O
 ." I-GENE
 
 SH2D1A I-GENE
@@ -8345,7 +8345,7 @@ that O
 encodes O
 a O
 putative O
-493 I-GENE
+493 O
 - I-GENE
 amino O
 acid I-GENE
@@ -8837,7 +8837,7 @@ sequence I-GENE
 revealed O
 26 O
 , O
-588 I-GENE
+588 O
 protein I-GENE
 - I-GENE
 encoding O
@@ -9591,7 +9591,7 @@ group O
 ( O
 n O
 = O
-109 I-GENE
+109 O
 ) O
 who O
 provided O
@@ -9668,7 +9668,7 @@ acuity O
 of O
 0 O
 . O
-08 I-GENE
+08 O
 ( O
 range O
 hand O
@@ -9676,7 +9676,7 @@ motions O
 / I-GENE
 0 O
 . O
-003 I-GENE
+003 O
 to O
 0 O
 . O
@@ -9704,7 +9704,7 @@ of O
 range O
 0 O
 . O
-025 I-GENE
+025 O
 - I-GENE
 0 O
 . O
@@ -10943,7 +10943,7 @@ OVX I-GENE
 rats O
 . O
 
-2001 I-GENE
+2001 O
 . O
 
 The O
@@ -11108,7 +11108,7 @@ ErbB2 I-GENE
 dependent I-GENE
 BT I-GENE
 - I-GENE
-474 I-GENE
+474 O
 and O
 SKBR I-GENE
 - I-GENE
@@ -11549,7 +11549,7 @@ sequences I-GENE
 
 ORF1 O
 ( O
-1029 I-GENE
+1029 O
 bp O
 ; O
 EMBL I-GENE
@@ -11962,7 +11962,7 @@ we O
 have O
 identified O
 a O
-460 I-GENE
+460 O
 - I-GENE
 kb O
 CENP I-GENE
@@ -13056,7 +13056,7 @@ treatment O
 would O
 have O
 prevented O
-318 I-GENE
+318 O
 events O
 per O
 10 O
@@ -13096,12 +13096,12 @@ gained O
 of O
 20 O
 , O
-375 I-GENE
+375 O
 pounds O
 ($ O
 31 O
 , O
-818 I-GENE
+818 O
 ). O
 
 Hydrogels I-GENE
@@ -13609,7 +13609,7 @@ This O
 retrospective O
 review O
 comprised O
-2711 I-GENE
+2711 O
 eyes O
 that O
 had O
@@ -13619,7 +13619,7 @@ September I-GENE
 1996 O
 and O
 September I-GENE
-1999 I-GENE
+1999 O
 . O
 
 Sixty I-GENE
@@ -15205,7 +15205,7 @@ PADCAB I-GENE
 ). O
 
 Copyright O
-2001 I-GENE
+2001 O
 Academic O
 Press O
 . O

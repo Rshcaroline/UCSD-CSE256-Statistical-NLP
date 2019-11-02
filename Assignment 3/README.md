@@ -4,7 +4,7 @@
 
 ### Problem 1. 
 
-You can simple run:
+Files are in `root/P1_Baseline/p1`. You can simple run:
 
 ```bash
 bash p1-1.sh
@@ -39,7 +39,7 @@ GENE:    0.158861       0.660436        0.256116
 
 ### Problem 2.
 
-You can simple run:
+Files are in `root/P1_Baseline/p2`. You can simple run:
 
 ```bash
 bash p1-2.sh
@@ -65,12 +65,11 @@ python eval_gene_tagger.py gene.key gene_dev.p2.out
 ```
 
 ```bash
-Found 2669 GENEs. Expected 642 GENEs; Correct: 424.
+Found 2109 GENEs. Expected 642 GENEs; Correct: 400.
 
          precision      recall          F1-Score
-GENE:    0.158861       0.660436        0.256116
+GENE:    0.189663       0.623053        0.290803
 ```
 
-
-
 ## Part 2. Trigram HMM
+

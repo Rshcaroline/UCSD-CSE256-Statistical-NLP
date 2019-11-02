@@ -144,6 +144,7 @@ class Hmm(object):
                 self.ngram_counts[n-1][ngram] = count
                 
 
+
 def usage():
     print ("""
     python count_freqs.py [input_file] > [output_file]
