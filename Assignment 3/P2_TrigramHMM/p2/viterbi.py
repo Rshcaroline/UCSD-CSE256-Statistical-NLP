@@ -2,7 +2,7 @@
 @Author: Shihan Ran
 @Date: 2019-11-02 11:29:23
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-02 14:19:09
+@LastEditTime: 2019-11-02 22:54:17
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -13,6 +13,7 @@ import sys
 from collections import defaultdict
 import math
 import itertools
+import string
 
 
 def read_counts(counts_file, word_tag, word_dict, ngram_tag):
@@ -29,14 +30,18 @@ def efunc(word_tag, word_dict, ngram_tag, x, y):
     e(x|y) = p(x, y) / p(y)
     """
     if x not in word_dict:
+        if all(c in string.punctuation for c in x):
+            x = '_ALL_PUNCTUATION_'
         # if all(c.isdigit() for c in x):
         #     x = '_ALL_NUMERIC_'
-        if any(c.isdigit() for c in x):
+        elif any(c.isdigit() for c in x):
             x = '_CONTAIN_NUMERIC_'
-        elif x[0].isupper():
-            x = '_FIRST_CAP_'
-        elif x[-1].isupper():
-            x = '_LAST_CAP_'
+        # if x.isupper():
+        #     x = '_ALL_CAP_'
+        # if x[0].isupper():
+        #     x = '_FIRST_CAP_'
+        # if x[-1].isupper():
+        #     x = '_LAST_CAP_'
         else:
             x = '_RARE_'
     return word_tag[(x, y)] / float(ngram_tag[(y,)])
