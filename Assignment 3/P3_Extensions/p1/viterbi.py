@@ -2,7 +2,7 @@
 @Author: Shihan Ran
 @Date: 2019-11-02 11:29:23
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-02 14:19:09
+@LastEditTime: 2019-11-03 00:10:03
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -13,6 +13,10 @@ import sys
 from collections import defaultdict
 import math
 import itertools
+import string
+
+lamd = 0.3
+tag_set = ('O', 'I-GENE')
 
 
 def read_counts(counts_file, word_tag, word_dict, ngram_tag):
@@ -29,27 +33,30 @@ def efunc(word_tag, word_dict, ngram_tag, x, y):
     e(x|y) = p(x, y) / p(y)
     """
     if x not in word_dict:
+        if all(c in string.punctuation for c in x):
+            x = '_ALL_PUNCTUATION_'
         # if all(c.isdigit() for c in x):
         #     x = '_ALL_NUMERIC_'
-        if any(c.isdigit() for c in x):
+        elif any(c.isdigit() for c in x):
             x = '_CONTAIN_NUMERIC_'
-        elif x[0].isupper():
-            x = '_FIRST_CAP_'
-        elif x[-1].isupper():
-            x = '_LAST_CAP_'
+        # if x.isupper():
+        #     x = '_ALL_CAP_'
+        # if x[0].isupper():
+        #     x = '_FIRST_CAP_'
+        # if x[-1].isupper():
+        #     x = '_LAST_CAP_'
         else:
             x = '_RARE_'
-    return word_tag[(x, y)] / float(ngram_tag[(y,)])
+    return ( word_tag[(x, y)] + lamd )/ (float(ngram_tag[(y,)]) + lamd * len(tag_set))
 
 def qfunc(ngram_tag, v, w, u):
     """
     q(v|w,u)
     """
-    return ngram_tag[w, u, v] / float(ngram_tag[w, u])
+    return ( ngram_tag[w, u, v] + lamd ) / (float(ngram_tag[w, u]) + lamd * len(tag_set))
 
 def viterbi(word_tag, word_dict, ngram_tag, word_list):
     word_list = ['*', '*'] + word_list
-    tag_set = ('O', 'I-GENE')
     bp_dict = {}
     pi_dict = {(1, '*', '*'): 1}
     
@@ -72,7 +79,8 @@ def viterbi(word_tag, word_dict, ngram_tag, word_list):
             pi_dict[k, u, v] = pi
             bp_dict[k, u, v] = bp
 
-    # 'STOP' is the last one
+    # 'STOP' is the last tag
+    # find the tag sequence
     uv_list= [(pi_dict[len(word_list) - 1, u, v] * qfunc(ngram_tag, 'STOP', u, v), (u, v)) \
             for (u, v) in itertools.product(tag_set, tag_set)]
     tagn_1, tagn = max(uv_list, key=lambda x:x[0])[1]

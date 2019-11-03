@@ -2,7 +2,7 @@
 
 ## Part 1. Baseline
 
-### Problem 1. 
+### Problem 1. Only RARE classes
 
 Files are in `root/P1_Baseline/p1`. You can simple run:
 
@@ -37,7 +37,7 @@ Found 2669 GENEs. Expected 642 GENEs; Correct: 424.
 GENE:    0.158861       0.660436        0.256116
 ```
 
-### Problem 2.
+### Problem 2. Different RARE classes
 
 Files are in `root/P1_Baseline/p2`. You can simple run:
 
@@ -73,7 +73,7 @@ GENE:    0.189663       0.623053        0.290803
 
 ## Part 2. Trigram HMM
 
-### Problem 1.
+### Problem 1. Only RARE classes
 
 Files are in `root/P2_TrigramHMM/p1`. You can simple run:
 
@@ -97,7 +97,7 @@ python viterbi.py gene.counts_with_rare gene.dev > gene_dev.p3.out
 python eval_gene_tagger.py gene.key gene_dev.p3.out
 ```
 
-### Problem 2.
+### Problem 2. Different RARE classes
 
 Files are in `root/P2_TrigramHMM/p2`. You can simple run:
 
@@ -122,3 +122,54 @@ python eval_gene_tagger.py gene.key gene_dev.p4.out
 ```
 
 ## Part 3. Extensions
+
+### Problem 1. Add-Lambda smoothing
+
+Files are in `root/P3_Extensions/p1`. You can simple run:
+
+```bash
+bash p3-2.sh
+```
+
+Or following the next steps:
+
+#### Pre-processing
+
+```bash
+python replace_with_rare_classes.py gene.train > gene.train_with_rare_classes
+python count_freqs.py gene.train_with_rare_classes > gene.counts_with_rare_classes
+```
+
+#### Training and Evaluating 
+
+```bash
+python viterbi.py gene.counts_with_rare_classes gene.dev > gene_dev.p5.out
+python eval_gene_tagger.py gene.key gene_dev.p5.out
+```
+
+### Problem 2.
+
+Files are in `root/P3_Extensions/p2`. You can simple run:
+
+```bash
+bash p3-2.sh
+```
+
+Or following the next steps:
+
+#### Pre-processing
+
+```bash
+python replace_with_rare_classes.py gene.train > gene.train_with_rare_classes
+python count_freqs.py gene.train_with_rare_classes > gene.counts_with_rare_classes
+```
+
+#### Training and Evaluating 
+
+```bash
+python viterbi.py gene.counts_with_rare_classes gene.dev > gene_dev.p6.out
+python eval_gene_tagger.py gene.key gene_dev.p6.out
+```
+
+
+
