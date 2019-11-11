@@ -147,7 +147,7 @@ python viterbi.py gene.counts_with_rare_classes gene.dev > gene_dev.p5.out
 python eval_gene_tagger.py gene.key gene_dev.p5.out
 ```
 
-### Problem 2.
+### Problem 2. Moving to 4-grams
 
 Files are in `root/P3_Extensions/p2`. You can simple run:
 
@@ -170,6 +170,3 @@ python count_freqs.py gene.train_with_rare_classes > gene.counts_with_rare_class
 python viterbi.py gene.counts_with_rare_classes gene.dev > gene_dev.p6.out
 python eval_gene_tagger.py gene.key gene_dev.p6.out
 ```
-
-
-

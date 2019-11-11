@@ -2,7 +2,7 @@
 @Author: 
 @Date: 2019-11-01 19:58:55
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-02 22:54:58
+@LastEditTime: 2019-11-10 16:34:16
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -21,18 +21,18 @@ def get_rare_word_classes(word):
     """
     Grouping rare words into informative word classes
     """
-    if all(c in string.punctuation for c in word):
-        return '_ALL_PUNCTUATION_'
+    # if all(c in string.punctuation for c in word):
+    #     return '_ALL_PUNCTUATION_'
     # if all(c.isdigit() for c in word):
     #     return '_ALL_NUMERIC_'
     if any(c.isdigit() for c in word):
         return '_CONTAIN_NUMERIC_'
     # if word.isupper():
     #     return '_ALL_CAP_'
-    # if word[0].isupper():
-    #     return '_FIRST_CAP_'
-    # if word[-1].isupper():
-    #     return '_LAST_CAP_'
+    if word[0].isupper():
+        return '_FIRST_CAP_'
+    if word[-1].isupper():
+        return '_LAST_CAP_'
     return '_RARE_'
 
 def get_word_counts(corpus_file):

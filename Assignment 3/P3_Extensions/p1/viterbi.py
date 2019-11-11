@@ -2,7 +2,7 @@
 @Author: Shihan Ran
 @Date: 2019-11-02 11:29:23
 @LastEditors: Shihan Ran
-@LastEditTime: 2019-11-03 00:10:03
+@LastEditTime: 2019-11-10 15:24:14
 @Email: rshcaroline@gmail.com
 @Software: VSCode
 @License: Copyright(C), UCSD
@@ -113,13 +113,14 @@ def usage():
 
 if __name__ == "__main__":
 
-    if len(sys.argv)!=3: # Expect exactly one argument: the training data file
+    if len(sys.argv)!=4: # Expect exactly one argument: the training data file
         usage()
         sys.exit(2)
 
     try:
         counts_file = open(sys.argv[1], "r")
         dev_file = open(sys.argv[2], 'r')
+        out_file = open(sys.argv[3], 'w')
     except IOError:
         sys.stderr.write("ERROR: Cannot read inputfile %s.\n" % arg)
         sys.exit(1)
@@ -129,5 +130,6 @@ if __name__ == "__main__":
 
     read_counts(counts_file, word_tag, word_dict, ngram_tag)
     counts_file.close()
-    tag_gene(word_tag, word_dict, ngram_tag, sys.stdout, dev_file)
+    # tag_gene(word_tag, word_dict, ngram_tag, sys.stdout, dev_file)
+    tag_gene(word_tag, word_dict, ngram_tag, out_file, dev_file)
     dev_file.close()

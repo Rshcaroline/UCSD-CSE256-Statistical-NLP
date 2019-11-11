@@ -1,0 +1,88 @@
+\section{\textbf{Trigram HMM}}
+
+\begin{algorithm*}[ht]
+  \caption{The Viterbi Algorithm with backpointers}
+  \label{algo:viterbi}
+  \KwIn{a sequence $x_1, \cdots, x_n$, set of possible tags $\mathcal{K}$, parameters $q(s|u,v)$ and $e(x|s)$}
+  \KwOut{the tag sequence $y_1, \cdots, y_n$}
+  Set $\pi(0, *, *)=1$\;
+  Initialize $\mathcal{K}_{-1} = \mathcal{K}_0 = \{*\}$ and $\mathcal{K}_{k} = \mathcal{K}$\;
+  \For{$k=1$ to $n$}
+  {
+    \For{$u\in \mathcal{K}_{k-1}, v\in\mathcal{K}_{k}$}
+    {
+        $\pi(k, u, v)=\max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$\;
+        $bp(k, u, v)=\arg \max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$\;
+    }
+  }
+  Set $\left(y_{n-1}, y_{n}\right)=\arg \max _{u \in \mathcal{K}_{n-1}, v \in \mathcal{K}_{n}}(\pi(n, u, v) \times q(\operatorname{STOP} | u, v))$\;
+  \For{$k=(n-1)$ to $1$}
+  {
+        $y_{k}=bp\left(k+2, y_{k+1}, y_{k+2}\right)$\;
+  }
+  return $y_1, \cdots, y_n$\;
+\end{algorithm*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{Purpose of the Viterbi algorithm}}
+
+Viterbi is a kind of algorithm that makes uses of a dynamic programming trellis. The idea is to process the observation sequence left to right, filling out the trellis. Each cell of the trellis, $v_t(j)$, represents the probability that the HMM is in state j after seeing the first t observations and passing through the most probable state sequence $s_0,s_1,\cdots,s_{t−1}$, given the automaton $\lambda$. The value of each cell $v_t(j)$ is computed by \textbf{recursively} taking the most probable path that could lead us to this cell. Note that we represent the most probable path by taking the maximum over all possible previous state sequences. Given that we had already computed the probability of being in every state at time $t-1$, we compute the Viterbi probability by taking the most probable of the extensions of the paths that lead to the current cell. 
+
+Compared with Viterbi, Brute-force is prohibitively computationally expensive. A problem with $S=10$ and sequence length $T=80$. The number of all possible sequences in this problem is $O(S^T)=10^{80}$, which is how many atoms we have in the observable universe! Instead, the time complexity of Viterbi is only $O(T|S|^3)$.
+
+Greedy decoder tags a sequence from left to right, making a hard decision on each word in order and we greedily choose the best tag for each word. However, compared with Viterbi, by making a hard decision on each word before moving to the next word, the greedy tagger can not use the evidence from future decisions.
+
+\subsection{\textbf{Implementation}}
+
+\begin{table*}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of Trigram HMM on different rare classes}
+\setlength{\tabcolsep}{1.3mm}{
+\begin{tabular}{lccc}
+\hline
+\textbf{Models} &    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+ $\text{\_RARE\_}$ & \textbf{0.542} & \textbf{0.315} & \textbf{0.398} \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUNCTUATION\_}$ & 0.543 & 0.314 & 0.398 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUMERIC\_}$ & 0.537 & 0.313 & 0.396 \\
+ $\text{\_RARE\_}+\text{\_CONTAIN\_NUMERIC\_}$ & 0.553 & 0.347 & 0.427 \\
+ $\text{\_RARE\_}+\text{\_ALL\_CAP\_}$ & 0.526 & 0.318 & 0.396 \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}$ & 0.518 & 0.312 & 0.389 \\
+ $\text{\_RARE\_}+\text{\_LAST\_CAP\_}$ & 0.534 & 0.321 & 0.401 \\
+ $\text{\_RARE\_}+\text{\_CONTAIN\_NUMERIC\_}$ +$\text{\_ALL\_PUNCTUATION\_}$ & \textbf{0.555} & \textbf{0.347} & \textbf{0.427} \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.518 & 0.316 & 0.393 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.513 & 0.316 & 0.391 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.511 & 0.316 & 0.391 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.530 & 0.340 & 0.414 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.521 & 0.343 & 0.414 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.521 & 0.343 & 0.414 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.532 & 0.346 & 0.419 \\
+ $\text{\_RARE\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.542 & 0.341 & 0.419 \\
+\hline
+\end{tabular}}
+\label{tab:trigramHMM}
+\end{table*}
+
+Given a new sentence $x_1,\dots,x_n$, and parameters $q$ and $e$ that we have estimated from a training corpus, we can find the highest probability tag sequence for $x_1,\dots,x_n$ using the Algorithm~\ref{algo:viterbi}. Some specific details are explained in the following subsections:
+
+\subsubsection{\textbf{Base Case}} $\pi(0, *, *)=1$.
+
+\subsubsection{\textbf{Recursive formulation}} For any $k\in \{1, \dots, n\}$, for any $u\in \mathcal{K}_{k-1}, v\in\mathcal{K}_{k}$, we store the  we can define the recursive formulation as: $\pi(k, u, v)=\max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$ where $\mathcal{K}_{k}$ is the set of possible tags at position $k$.
+
+\subsubsection{\textbf{Obtain the joint probability of word sequence and tag sequence}} If a trigram HMM has parameters $q(s | u, v)$ and $e(x | s)$. Given a training corpus from which we can derive counts, the maximum likelihood estimates for the parameters are $q(s | u, v)=\frac{c(u, v, s)}{c(u, v)}$ and $e(x | s)=\frac{c(s \leadsto x)}{c(s)}$. Then we can define the joint probability of word sequences $x_1, \dots, x_n$ paired with a tag sequence $y_1, \dots, y_{n+1}$ where $y_{n+1}=STOP$ as $p\left(x_{1} \ldots x_{n}, y_{1} \ldots y_{n+1}\right)=\prod_{i=1}^{n+1} q\left(y_{i} | y_{i-2}, y_{i-1}\right) \prod_{i=1}^{n} e\left(x_{i} | y_{i}\right)$.
+
+\subsubsection{\textbf{Use backpointers to generate the final tag sequence}} For any $k\in \{1, \dots, n\}$, for any $u\in \mathcal{K}_{k-1}, v\in\mathcal{K}_{k}$, we store the element maximizing $\pi(k, u, v)$, that is $bp(k, u, v)=\arg \max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$. Using this backpointer table, we can generate the final tag sequence by $y_{k}=bp\left(k+2, y_{k+1}, y_{k+2}\right)$.
+
+Some of the key challenges and issues are how to deal with the boundary case: $q\left(y_{1} | *, *\right)$, $q\left(y_{2} | *, y_{1}\right)$, $q\left(\operatorname{STOP} | y_{n-1}, y_{n}\right)$. We solve this problem by adding $[*, *]$ to the word list when counting frequencies and use $\left(y_{n-1}, y_{n}\right)=\arg \max _{u \in \mathcal{K}_{n-1}, v \in \mathcal{K}_{n}}(\pi(n, u, v) \times q(\operatorname{STOP} | u, v))$ to generate the last backpointer.
+
+\subsection{\textbf{Performances}}
+
+We evaluate and compare the new baseline models on train and dev sets. We can see from the results Table~\ref{tab:trigramHMM} the following points:
+
+\begin{itemize}
+\item The F-1 score exceeds the baseline model enormously (from 0.291 to 0.427) while the recall score decreases a lot.
+\item Adding classes to $\text{\_RARE\_}$ will affect the performances of trigram HMM. Some rare words classes (e.g. $\text{\_ALL\_PUNCTUATION\_}$ and $\text{\_CONTAIN\_NUMERIC\_}$) will help increase the performance compared with only replace infrequent words with a common symbol $\text{\_RARE\_}$ while others (e.g. $\text{\_ALL\_NUMERIC\_}$, $\text{\_FIRST\_CAP\_}$, $\text{\_LAST\_CAP\_}$ and $\text{\_ALL\_CAP\_}$) may decrease the performances.
+\item We will achieve the best performances if and only if using the combinations of $\text{\_RARE\_} + \text{\_ALL\_PUNCTUATION\_} + \text{\_CONTAIN\_NUMERIC\_}$. Adding another class will not help increase the performance while removing any classes will decrease the performance.
+\end{itemize}
+

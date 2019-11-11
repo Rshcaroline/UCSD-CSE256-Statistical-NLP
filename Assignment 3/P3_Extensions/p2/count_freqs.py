@@ -106,7 +106,7 @@ class Hmm(object):
             if ngram[-2][0] is None: # this is the first n-gram in a sentence
                 self.ngram_counts[self.n - 2][tuple((self.n - 1) * ["*"])] += 1
 
-    def write_counts(self, output, printngrams=[1,2,3]):
+    def write_counts(self, output, printngrams=[1,2,3,4]):
         """
         Writes counts to the output file object.
         Format:
@@ -125,7 +125,7 @@ class Hmm(object):
 
     def read_counts(self, corpusfile):
 
-        self.n = 3
+        self.n = 4
         self.emission_counts = defaultdict(int)
         self.ngram_counts = [defaultdict(int) for i in xrange(self.n)]
         self.all_states = set()
@@ -163,8 +163,8 @@ if __name__ == "__main__":
         sys.stderr.write("ERROR: Cannot read inputfile %s.\n" % arg)
         sys.exit(1)
     
-    # Initialize a trigram counter
-    counter = Hmm(3)
+    # Initialize a four-gram counter
+    counter = Hmm(4)
     # Collect counts
     counter.train(input)
     # Write the counts

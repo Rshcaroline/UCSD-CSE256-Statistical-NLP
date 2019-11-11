@@ -1,0 +1,139 @@
+\section{\textbf{Extensions}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{algorithm*}[ht]
+  \caption{The Viterbi Algorithm of 4-grams HMM}
+  \label{algo:4gram}
+  \KwIn{a sequence $x_1, \cdots, x_n$, set of possible tags $\mathcal{K}$, parameters $q(s|u, v, z)$ and $e(x|s)$}
+  \KwOut{the tag sequence $y_1, \cdots, y_n$}
+  Set $\pi(0, *, *, *)=1$\;
+  Initialize $\mathcal{K}_{-2} = \mathcal{K}_{-1} = \mathcal{K}_0 = \{*\}$ and $\mathcal{K}_{k} = \mathcal{K}$\;
+  \For{$k=1$ to $n$}
+  {
+    \For{$u\in \mathcal{K}_{k-2}, v\in\mathcal{K}_{k-1}, z\in\mathcal{K}_{k}$}
+    {
+        % $\pi(k, u, v)=\max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$\;
+        $\pi(k, u, v, z)=\max _{w \in \mathcal{K}_{k-3}}\left(\pi(k-1, w, u, v) \times q(z | w, u, v) \times e\left(x_{k} | z\right)\right)$\;
+        % $bp(k, u, v)=\arg \max _{w \in \mathcal{K}_{k-2}}\left(\pi(k-1, w, u) \times q(v | w, u) \times e\left(x_{k} | v\right)\right)$\;
+        $bp(k, u, v, z)=\arg \max _{w \in \mathcal{K}_{k-3}}\left(\pi(k-1, w, u, v) \times q(z | w, u, v) \times e\left(x_{k} | z\right)\right)$\;
+    }
+  }
+  Set $\left(y_{n-2}, y_{n-1}, y_{n}\right)=\arg \max _{u \in \mathcal{K}_{n-2}, v \in \mathcal{K}_{n-1}, z \in \mathcal{K}_{n}}(\pi(n, u, v, z) \times q(\operatorname{STOP} | u, v, z))$\;
+  \For{$k=(n-1)$ to $1$}
+  {
+        $y_{k}=bp\left(k+3, y_{k+1}, y_{k+2}, y_{k+3}\right)$\;
+  }
+  return $y_1, \cdots, y_n$\;
+\end{algorithm*}
+
+\subsection{\textbf{Descriptions of extensions}}
+
+\subsubsection{\textbf{Add $\lambda$ smoothing}}
+
+Considering the HMM we have is not a fully connected one, in which many of the transitions between states have zero probability. Hence the probability calculation isn't simply doing $P=\frac{n}{N}$ , we should smooth the parameters. We choose \textbf{add $\lambda$ smoothing} methods.
+
+After using smoothing, the mamximum likelihood estimates for the parameters can be adapted into: 
+
+$$q(s | u, v)=\frac{c(u, v, s) + \lambda}{c(u, v) + \lambda * |S|}$$
+
+$$e(x | s)=\frac{c(s \leadsto x) + \lambda}{c(s) + \lambda*|S|}$$
+
+\subsubsection{\textbf{Moving to 4-grams}}
+
+The implementation details are in the Algorithm~\ref{algo:4gram}. Compared with Trigram HMM, key changes and issues lie in dealing with the boundary case. Still, we solve this problem by adding $[*,*,*]$ to the word list when counting frequencies and use $\operatorname{STOP}$ sign to generate the last backpointer.
+
+\subsection{\textbf{Performances}}
+
+\subsubsection{\textbf{Add $\lambda$ smoothing}}
+
+By changing $\lambda$, I find the performance varies enormously.
+    
+\begin{table}[!hbt]
+% Center the table
+\begin{center}
+% Title of the table
+\caption{Performance of different lambda}
+\label{tab:lambda}
+% Table itself: here we have two columns which are centered and have lines to the left, right and in the middle: |c|c|
+\begin{tabular}{|c|c|c|c|}
+	% To create a horizontal line, type \hline
+	\hline
+	% To end a column type &
+	% For a linebreak type \\
+	$\lambda$ & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline 
+    $1$ & 0.526738 & 0.306854 & 0.387795 \\
+    \hline 
+    $0.9$ & 0.535433 & 0.317757 & 0.398827 \\
+    \hline 
+    $0.8$ & 0.539062 & 0.322430 & 0.403509 \\
+    \hline
+    $0.7$ & 0.550251 & 0.341121 & 0.421154 \\
+    \hline 
+    $0.6$ & 0.555000 & 0.345794 & 0.426104 \\
+    \hline 
+    $0.5$ & 0.556110 & 0.347352 & 0.427613 \\
+    \hline
+    $0.4$ & 0.556110 & 0.347352 & 0.427613 \\
+    \hline
+    $0.3$ & \textbf{0.558603} & \textbf{0.348910} & \textbf{0.429530} \\
+    \hline
+    $0.2$ & \textbf{0.558603} & \textbf{0.348910} & \textbf{0.429530} \\
+    \hline
+	$0.1$ & 0.553350 & 0.347352 & 0.426794 \\
+	\hline
+	$10^{-2}$ & 0.553350 & 0.347352 & 0.426794 \\
+	\hline
+	$10^{-3}$ & 0.554726 &  0.347352 & 0.427203 \\
+	\hline
+	$10^{-4}$ & 0.554726 & 0.347352 & 0.427203 \\
+	\hline
+	$10^{-5}$& 0.554726 & 0.347352 & 0.427203 \\
+	\hline
+	$0$ & 0.554726 & 0.347352 & 0.427203 \\
+    \hline 
+\end{tabular}
+\end{center}
+\end{table}
+    
+We can see from Table~\ref{tab:lambda}, the convergence was reached at $\lambda = 10^{-3}$ with a F1-score  \textbf{0.427203}, and then the decrease of $\lambda$ doesn't affect the performance. I assume this phenomenon is due to the limitation of \textbf{add $\lambda$ smooth}. The best performances was achieved at $\lambda = 0.3\ \&\ 0.2$ with a F1-score \textbf{0.427613}, which is an improvement compared with the previous best results from Trigram HMM.
+
+\subsubsection{\textbf{Moving to 4-grams}}
+
+\begin{table*}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of 4-grams HMM on different rare classes}
+\setlength{\tabcolsep}{1.3mm}{
+\begin{tabular}{lccc}
+\hline
+\textbf{Models} &    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+ $\text{\_RARE\_}$ & \textbf{0.516} & \textbf{0.249} & \textbf{0.336} \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUNCTUATION\_}$ & 0.521 & 0.268 & 0.354 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUMERIC\_}$ & 0.515 & 0.266 & 0.351 \\
+ $\text{\_RARE\_}+\text{\_CONTAIN\_NUMERIC\_}$ & \textbf{0.536} & \textbf{0.285} & \textbf{0.372} \\
+ $\text{\_RARE\_}+\text{\_ALL\_CAP\_}$ & 0.510 & 0.283 & 0.364 \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}$ & 0.513 & 0.268 & 0.352 \\
+ $\text{\_RARE\_}+\text{\_LAST\_CAP\_}$ & 0.501 & 0.277 & 0.357 \\
+ $\text{\_RARE\_}+\text{\_CONTAIN\_NUMERIC\_}$ +$\text{\_ALL\_PUNCTUATION\_}$ & 0.534 & 0.285 & 0.372 \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.519 & 0.255 & 0.342 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.254 & 0.340 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ &  0.511 & 0.316 & 0.391 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.249 & 0.336 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.249 & 0.336 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.249 & 0.336 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.249 & 0.336 \\
+ $\text{\_RARE\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.516 & 0.249 & 0.336 \\
+\hline
+\end{tabular}}
+\label{tab:4gramHMM}
+\end{table*}
+
+We evaluate and compare the new baseline models on train and dev sets. We can see from the results Table~\ref{tab:4gramHMM} the following points:
+
+\begin{itemize}
+\item Overall speaking, Trigram HMM outperforms four-gram HMM in almost every combination of rare classes. This may due to the reason for overfitting. Again, the recall score decreases a lot.
+\item Adding classes to $\text{\_RARE\_}$ will affect the performances of four-gram HMM. Some rare words classes (e.g. $\text{\_ALL\_PUNCTUATION\_}$ and $\text{\_CONTAIN\_NUMERIC\_}$) will help increase the precision compared with only replace infrequent words with a common symbol $\text{\_RARE\_}$ while others (e.g. $\text{\_ALL\_NUMERIC\_}$, $\text{\_FIRST\_CAP\_}$, $\text{\_LAST\_CAP\_}$ and $\text{\_ALL\_CAP\_}$) may decrease the precision. BUT adding any of the classes will increase the recall score and F1-score.
+\item We will achieve the best performances if and only if using the combinations of $\text{\_RARE\_} + \text{\_CONTAIN\_NUMERIC\_}$. Adding another class will not help increase the performance while removing any classes will decrease the performance.
+\end{itemize}

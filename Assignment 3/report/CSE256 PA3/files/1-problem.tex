@@ -1,0 +1,104 @@
+\section{\textbf{Baseline}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{Design rare word classes}}
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Statistical Information About Dataset}
+\begin{tabular}{lcccc}
+\hline
+&    \textbf{Train} & \textbf{Dev} & \textbf{Test} \\
+\hline
+ \textbf{Total} & 399995 & 15229 & 15595 \\
+\hline
+\end{tabular}
+\label{tab:stat}
+\end{table}
+
+We replace infrequent words ($Count(x)<Threshold$) in the original training data file with a common symbol $\text{\_RARE\_}$. We first analyze how the number of rare words will change according to the threshold. The statistical information is in Table~\ref{tab:stat} and Table~\ref{tab:numberofrarewords}.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Number of Rare Words V.S. Threshold}
+\begin{tabular}{cccc}
+\hline
+\textbf{Threshold} &    \textbf{3} & \textbf{5} & \textbf{7} \\
+\hline
+ \textbf{\# of rare words} & 26315(6.6\%) & 37513(9.4\%) & 45615(11.4\%) \\
+\hline
+\end{tabular}
+\label{tab:numberofrarewords}
+\end{table}
+
+To design some informative word classes to replace rare/unseen words. We take a look at some rare words first. The distribution and the format of them may give us some insights. Some examples of rare words and their format are in Table~\ref{tab:exofrarewords}.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Examples of Rare Words}
+\begin{tabular}{lcc}
+\hline
+\textbf{\textit{Format}} &    \textbf{Rare Words} & \textbf{Counts}\\
+\hline
+ \textbf{\textit{Capitalized first letter}}   & \textit{Beta, Takayasu, Erythromycin} & 6931\\
+ \textbf{\textit{Capitalized last letter}} &  \textit{apoAI, dNTP, hGCSFR} & 703\\
+ \textbf{\textit{Capitalized all letters}} &  \textit{HI, SGOT, GGTP, TBG} & 4109\\
+ \textbf{\textit{All punctuation}} &  \textit{(', '), .--, ?], -]} & 196\\
+ \textbf{\textit{Contain numeric}} &  \textit{B5, FT4I, FT3, 0acteriuria} & 5157\\
+ \textbf{\textit{All numeric}} &  \textit{1966, 1973, 479, 1977, 255} & 1180 \\
+ \textbf{\textit{Other rare words}} &  \textit{polyarteritis, erythrocytes} & 19237\\
+\hline
+\end{tabular}
+\label{tab:exofrarewords}
+\end{table}
+
+Our intuition is to let the designed word classes can represent the true distribution of rare words as close as possible. Hence, according to the results of Table~\ref{tab:exofrarewords}, we design the following classes:
+
+\begin{itemize}
+\item $\text{\_ALL\_PUNCTUATION\_}$: The word consists of punctuations
+\item $\text{\_ALL\_NUMERIC\_}$: The word consists of numerics
+\item $\text{\_CONTAIN\_NUMERIC\_}$: The word contains at least one numeric
+\item $\text{\_ALL\_CAP\_}$: The word consists of capitalized letters
+\item $\text{\_FIRST\_CAP\_}$: The first letter of the word is capitalized
+\item $\text{\_LAST\_CAP\_}$: The last letter of the word is capitalized
+\item $\text{\_RARE\_}$: Any other word with the frequency lower than the threshold
+\end{itemize}
+
+\subsection{\textbf{Performances}}
+
+We evaluate and compare the new baseline models on train and dev sets. We can see from the results Table~\ref{tab:baselineperf} the following points:
+
+\begin{itemize}
+\item Adding single classes to $\text{\_RARE\_}$ isn't helpful. But using some combinations of rare words classes will indeed increase the performance compared with only replace infrequent words with a common symbol.
+\item Classes $\text{\_ALL\_PUNCTUATION\_}$ and $\text{\_ALL\_CAP\_}$ aren't helpful. Adding them to any of the combinations will not affect the performances.
+\item We will achieve the best performances if and only if using the combinations of $\text{\_RARE\_}+\text{\_ALL\_NUMERIC\_}+\text{\_CON\_NUMERIC\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$. Adding another class will not help increase the performance while removing any classes will decrease the performance.
+\end{itemize}
+
+\begin{table*}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of baseline model on different rare classes}
+\setlength{\tabcolsep}{1.3mm}{
+\begin{tabular}{lccc}
+\hline
+\textbf{Models} &    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+ $\text{\_RARE\_}$ & \textbf{0.159} & \textbf{0.660} & \textbf{0.256} \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUNCTUATION\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUMERIC\_}$ & 0.160 & 0.660 & 0.258 \\
+ $\text{\_RARE\_}+\text{\_CONTAIN\_NUMERIC\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_ALL\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_LAST\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.159 & 0.660 & 0.256 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.187 & 0.623 & 0.288 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.190 & 0.623 & 0.291 \\
+ $\text{\_RARE\_}+\text{\_ALL\_PUN\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_ALL\_CAP\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.190 & 0.623 & 0.291 \\
+ $\text{\_RARE\_}+\text{\_ALL\_NUM\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & \textbf{0.190} & \textbf{0.623} & \textbf{0.291} \\
+ $\text{\_RARE\_}+\text{\_CON\_NUM\_}+\text{\_FIRST\_CAP\_}+\text{\_LAST\_CAP\_}$ & 0.187 & 0.623 & 0.288 \\
+\hline
+\end{tabular}}
+\label{tab:baselineperf}
+\end{table*}
