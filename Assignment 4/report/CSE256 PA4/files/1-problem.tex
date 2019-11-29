@@ -1,0 +1,140 @@
+\section{\textbf{IBM Model 1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{Description of IBM Model 1}}
+
+The IBM Models are an instance of a noisy-channel model, and they have two components:
+
+\begin{itemize}
+    \item \textit{A Language Model} that assigns a probability $p(e)$ for any sentence $e=e_1\dots e_l$ in English. We can use any language models we've learned before, for example, a trigram model. The parameters of the language model can potentially be estimated from very large quantities of English data.
+    \item \textit{A Translation Model} that assigns a conditional probability $p(s|e)$ to any Spanish/English pair of sentences. The parameters of this model will be estimated from the translation examples.
+\end{itemize}
+
+\subsubsection{\textbf{What are IBM Models used for?}}
+
+Our goal is to model the conditional probability $p(s|e)=p(s_1,\dots, s_m | e_1, \dots, e_l, m)$ where $s_1,\dots, s_m$ is the foreign sentence and $e_1, \dots, e_l$ is the English sentence. The IBM Models make direct use of the idea of \textit{alignments}, and the resulting alignment models are of central importance in modern Machine Translation systems. The parameters of the IBM Models will be estimated using the expectation maximization (EM) algorithm.
+
+The Models define a conditional distribution $$p(s|e)=p(s_1,\dots, s_m, a_1, \dots, a_m | e_1, \dots, e_l, m)$$ where $a_1, \dots, a_m$ is the alignment of foreign sentence with words $s_1,\dots, s_m$. IBM Model 1 uses only translation parameters $t(s|e)$, which are interpreted as the conditional probability of generating Spanish word $s$ from English word $e$. 
+
+\subsubsection{\textbf{Limitations of IBM Model 1}}
+
+Each Spanish word is aligned to exactly one English word, which means the alignment is many-to-one. Some English words may be aligned to zero Spanish words. From our previous definition, IBM Model 1 only uses translation parameters $t(s|e)$, which results in the limited knowledge of the model for other information such as length of Spanish and English sentences, relative positions of Spanish words and English words.
+
+\subsection{\textbf{Description of EM Algorithm}}
+
+The estimates for fully-observed data are simple to derive. However, sometimes we will need to find parameters under many circumstances that data are incomplete. The EM algorithm is an efficient iterative method to calculate the maximum likelihood estimate when some of the data are missing or hidden. 
+
+\subsubsection{\textbf{Pros}}
+
+The EM algorithm is iterative and always improves a parameter’s estimation through its process. It could be applied even when part of the data are incomplete. It is able to guess and estimate a set of parameters for your model under many situations.
+
+\subsubsection{\textbf{Cons}}
+
+We begin with some random initial values for the parameters. Hence, the algorithm may end up stuck in a local maximum instead of the optimal global maximum. Also, the EM algorithm can be very slow sometimes.
+
+
+\subsection{\textbf{Method Overview}}
+
+\begin{algorithm*}[ht]
+  \caption{The parameter estimation algorithm for IBM Model 1 for partially-observed data}
+  \label{algo:ibm1}
+  \KwIn{A training corpus $(s^{(k)}, e^{(k)})$ for $k=1\dots n$, where $s^{(k)}=s_1^{(k)}\dots s_{m_k}^{(k)}$, $e^{(k)}=e_1^{(k)}\dots e_{l_k}^{(k)}$. An integer $N=5$ specifying the number of iterations of training.}
+  Initialization $t(s|e)=\frac{1}{n(e)}$, where $n(e)$ is defined as the number of different words that occur in any translation of a sentence containing $e$\;
+  \For{$step=1$ to $N$}
+  {
+    Set all counts $c(\dots)=0$\;
+    \For{$k=1$ to $n$}
+    {
+        \For{$i=1$ to $m_k$}
+        {
+            \For{$j=0$ to $l_k$}
+            {
+                $c\left(e_{j}^{(k)}, s_{i}^{(k)}\right) \leftarrow c\left(e_{j}^{(k)}, s_{i}^{(k)}\right)+\delta(k, i, j), \ c\left(e_{j}^{(k)}\right)\leftarrow c\left(e_{j}^{(k)}\right)+\delta(k, i, j)$\;
+                $c\left(j | i, l_{k}, m_{k}\right) \leftarrow c\left(j | i, l_{k}, m_{k}\right)+\delta(k, i, j), \ c\left(i, l_{k}, m_{k}\right) \leftarrow c\left(i, l_{k}, m_{k}\right)+\delta(k, i, j)$\;
+                where $\delta(k, i, j)=\frac{t\left(s_{i}^{(k)} | e_{j}^{(k)}\right)}{\sum_{j=0}^{l_{k}} t\left(s_{i}^{(k)} | e_{j}^{(k)}\right)}$
+            }
+        }
+    }
+    Set $t(s | e)=\frac{c(e, s)}{c(e)}$\;
+  }
+  \KwOut{parameters $t(s|e)$.}
+\end{algorithm*}
+
+\subsubsection{\textbf{High-Level Description of Implementation}}
+
+My implementation of IBM Model 1 includes two parts: training and testing. The training part is done by running $5$ iterations of EM Algorithm. More details can be found in Algorithm~\ref{algo:ibm1}. The testing part includes reading parameters as well as testing corpora and assigning alignment to each sentences pair with the highest $t(s|e)$ score, i.e. $a_{i}=\underset{j \in 0 \ldots l}{\arg \max } t\left(s_{i} | e_{j}\right)$.
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Statistical Information About Corpus}
+\begin{tabular}{lcccc}
+\hline
+&    \textbf{Training Corpus} & \textbf{Dev Corpus} & \textbf{Dev Key} \\
+\hline
+ \textbf{Total} & 5401 & 200 & 5921 \\
+\hline
+\end{tabular}
+\label{tab:stat}
+\end{table}
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of IBM Model 1}
+\begin{tabular}{lcccc }
+\hline
+&    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score}  \\
+\hline
+ \textbf{Total} & 0.413 & 0.427 & 0.420 \\
+\hline
+\end{tabular}
+\label{tab:ibm1}
+\end{table}
+
+\subsection{\textbf{Results}}
+
+The result of my implementation matches the expected F1-Score. Details can be found in Table \ref{tab:stat}
+ and \ref{tab:ibm1}.
+
+% F1 Score
+
+\subsection{\textbf{Discussions}}
+
+The performances through the training process are given by the Table~\ref{tab:ibm1iter}. We can see from the table the following facts:
+\begin{itemize}
+    \item The F1-Score grows gradually as the iteration increases. This reasonable according to our previous analysis since the EM algorithm always improves a parameter's estimation through its process.
+    \item However, there is an interesting phenomenon that the growth rate is mostly always decreasing as the iteration goes. From iteration 1 to iteration 2 the F1-Score increased by 66\%, whereas from iteration 4 to iteration 5 it only increased by 0.72\%. 
+\end{itemize}
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of IBM Model 1}
+\begin{tabular}{cccccc}
+\hline
+\textbf{Iterations} &    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Growth Rate}  \\
+\hline
+ \textbf{1} & 0.222 & 0.230 & 0.226 & - \\
+ \hline
+ \textbf{2} & 0.370 & 0.382 & 0.376 & \textbf{66.4\%}\\
+ \hline
+ \textbf{3} & 0.402 & 0.415 & 0.408 & 8.5\%\\
+ \hline
+ \textbf{4} & 0.410 & 0.424 & 0.417 & 2.2\%\\
+\hline
+ \textbf{5} & 0.413 & 0.427 & 0.420 & 0.72\%\\
+ \hline
+ \textbf{6} & 0.418 & 0.431 & 0.425 &  1.2\%\\
+ \hline
+ \textbf{7} & 0.420 & 0.434 & 0.427 & 0.47\%\\
+ \hline
+ \textbf{8} & 0.422 & 0.436 & 0.429 & 0.46\%\\
+ \hline
+ \textbf{9} & 0.422 & 0.436 & 0.429 & 0\%\\
+ \hline
+ \textbf{10} & \textbf{0.424} & \textbf{0.438} & \textbf{0.431} & 0.46\%\\
+\hline
+\end{tabular}
+\label{tab:ibm1iter}
+\end{table}
+
+% F1 Score changes vs iteration

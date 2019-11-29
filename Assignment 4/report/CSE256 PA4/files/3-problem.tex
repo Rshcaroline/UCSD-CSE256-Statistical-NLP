@@ -1,0 +1,40 @@
+\section{\textbf{Growing Alignments}}
+
+\subsection{\textbf{Overview}}
+
+\subsubsection{\textbf{Intuition}}
+
+As we noted above, the gold alignments allow English words to be aligned with multiple Spanish words. The method is to train IBM Model 2 to calculate both $p(s|e)$ and $p(e|s)$ as a starting point. Take the alignments given by two sets of parameters help us to evaluate the alignments produced by IBM Model 2 in two directions: from English to Spanish and from Spanish to English. 
+
+\subsubsection{\textbf{High-Level Description of Implementation}}
+
+We first train the IBM Model 2 for $p(s|e)$ and use the parameters in the model to produce the most likely alignment for each $(e,s)$ pair. Then gain, we train IBM Model 2 for $p(e|s)$ and produce most likely alignments for each $(s, e)$ pair.
+
+The heuristic method used in the implementation starts with the intersection of the two sets of alignments, and grow the alignments accordingly. Any alignment point in the union of $p(s|e)$ and $p(e|s)$ could be a candidate when growing. One alignment point is added each time, and that one alignment point should be only chosen from those pairs who are currently without alignment assigned. To grow the alignments, word pairs without assigned alignment that are close to those who have been assigned would be explored first. After the initial intersection has stopped growing, we now turn to other alignment points who are not neighbors of these points in the alignments.
+
+\subsection{\textbf{Results and Discussions}}
+
+\begin{table}[ht]  %table 里面也可以嵌套tabular,只有tabular是不能加标题的
+\centering  %表格居中
+\caption{Performances of IBM Model 2}
+\begin{tabular}{ccccc}
+\hline
+ &    \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score}   \\
+\hline
+ \textbf{IBM Model 2} & 0.442 & 0.456 & 0.449 \\
+ \hline
+\textbf{Intersection} & \textbf{0.823} & 0.270 & 0.407 \\
+\hline
+\textbf{Union} & 0.320 & \textbf{0.538} & 0.401 \\
+\hline
+\textbf{Intersection + Union} & 0.662 & 0.369 & \textbf{0.474} \\
+\hline
+\end{tabular}
+\label{tab:growingalignment}
+\end{table}
+
+As we can see from Table ~ \ ref {tab: growingalignment}, it makes sense that the precision of the intersection model is the highest and the recall of the union model is the highest. Because the intersection operation will filter out those alignments with the highest confidence from both directions (Spanish to English and English to Spanish) and the union operation will include as many correct alignments as possible. When you implement the heuristic method to combine intersection and union wisely, then you'll get a not bad precision, a not bad recall, and the highest F1-Score.
+
+% F1 Score
+
+% \subsection{\textbf{Different Alignment Heuristics (Bonus)}}
